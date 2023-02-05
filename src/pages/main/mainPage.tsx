@@ -147,7 +147,7 @@ export function MainPage() {
 
   useEffect(() => {
     if (selectedTag || selectedFilter) {
-      let _tag = selectedTag === "All" ? undefined : selectedTag;
+      const _tag = selectedTag === 'All' ? undefined : selectedTag;
       fetchRepoInfoList(1, _tag, convertFilter(selectedFilter));
       setPageIdx(1);
       dispatch(
@@ -248,7 +248,7 @@ export function MainPage() {
         setShowSearchMsg(true);
       } else {
         showAlarm(
-          "This repository hasn't been added to our database yet. Please connect with its maintainers."
+          'This repository hasn\'t been added to our database yet. Please connect with its maintainers.'
         );
       }
       dispatch(createGlobalProgressBarAction({ hidden: true }));

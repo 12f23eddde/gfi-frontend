@@ -13,7 +13,7 @@ const SELF_INTRO =
   'The introduction of the bot is submitted to FSE 2022 Demo --- GFI-Bot: Automated Good First Issue Recommendation on GitHub';
 
 const GFIBOT_INTRO =
-  "The embedded ML approach is introduced in the following paper: W. Xiao, H. He, W. Xu, X. Tan, J. Dong, M. Zhou. Recommending Good First Issues in GitHub OSS Projects. Accepted at ICSE'2022.";
+  'The embedded ML approach is introduced in the following paper: W. Xiao, H. He, W. Xu, X. Tan, J. Dong, M. Zhou. Recommending Good First Issues in GitHub OSS Projects. Accepted at ICSE\'2022.';
 
 export const DescriptionPage: React.FC = () => {
   const welcomeMsg = 'GFI-BOT WebApp';

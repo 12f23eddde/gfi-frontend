@@ -33,12 +33,28 @@ type MonthlyCount = {
   count: number;
 };
 
+export type RepoDynamics = {
+  name: string;
+  owner: string;
+  monthly_commits: Array<MonthlyCount>;
+  monthly_issues: Array<MonthlyCount>;
+  monthly_pulls: Array<MonthlyCount>;
+};
+
 /** Repo Info (with monthly stats) */
-export type RepoDetail = RepoBrief & {
-  monthly_stars: MonthlyCount[];
-  monthly_commits: MonthlyCount[];
-  monthly_issues: MonthlyCount[];
-  monthly_pulls: MonthlyCount[];
+export type RepoDetail = {
+  name: string;
+  owner: string;
+  description?: string;
+  language?: string;
+  topics: Array<string>;
+  r_newcomer_resolved: number;
+  n_stars: number;
+  n_gfis: number;
+  issue_close_time: number;
+  accuracy?: number;
+  auc?: number;
+  last_updated: string;
 };
 
 /** supported sort */

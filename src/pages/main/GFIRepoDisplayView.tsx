@@ -508,27 +508,27 @@ function IssueOverlayItem(props: IssueOverlayItem) {
     : 0;
   const simpleTrainDataProps: SimpleTrainInfoTagProp[] | [] = trainingSummary
     ? [
-        {
-          title: 'Issues Resolved',
-          data: trainingSummary.n_resolved_issues,
-        },
-        {
-          title: 'Resolved By Newcomers',
-          data: trainingSummary.n_newcomer_resolved,
-        },
-        {
-          title: 'AUC',
-          data: trainingSummary.auc
-            ? parseFloat(trainingSummary.auc.toFixed(2))
-            : 0,
-        },
-        {
-          title: 'ACC',
-          data: trainingSummary.auc
-            ? parseFloat(trainingSummary.auc.toFixed(2))
-            : 0,
-        },
-      ]
+      {
+        title: 'Issues Resolved',
+        data: trainingSummary.n_resolved_issues,
+      },
+      {
+        title: 'Resolved By Newcomers',
+        data: trainingSummary.n_newcomer_resolved,
+      },
+      {
+        title: 'AUC',
+        data: trainingSummary.auc
+          ? parseFloat(trainingSummary.auc.toFixed(2))
+          : 0,
+      },
+      {
+        title: 'ACC',
+        data: trainingSummary.auc
+          ? parseFloat(trainingSummary.auc.toFixed(2))
+          : 0,
+      },
+    ]
     : [];
 
   /* eslint-disable  react/no-children-prop */
@@ -610,27 +610,27 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
     const [displayInfo, setDisplayInfo] = useState<RepoDetail>();
     const simpleTrainDataProps: SimpleTrainInfoTagProp[] | [] = trainingSummary
       ? [
-          {
-            title: 'Issues Resolved',
-            data: trainingSummary.n_resolved_issues,
-          },
-          {
-            title: 'Resolved By Newcomers',
-            data: trainingSummary.n_newcomer_resolved,
-          },
-          {
-            title: 'AUC',
-            data: trainingSummary.auc
-              ? parseFloat(trainingSummary.auc.toFixed(2))
-              : 0,
-          },
-          {
-            title: 'ACC',
-            data: trainingSummary.auc
-              ? parseFloat(trainingSummary.accuracy.toFixed(2))
-              : 0,
-          },
-        ]
+        {
+          title: 'Issues Resolved',
+          data: trainingSummary.n_resolved_issues,
+        },
+        {
+          title: 'Resolved By Newcomers',
+          data: trainingSummary.n_newcomer_resolved,
+        },
+        {
+          title: 'AUC',
+          data: trainingSummary.auc
+            ? parseFloat(trainingSummary.auc.toFixed(2))
+            : 0,
+        },
+        {
+          title: 'ACC',
+          data: trainingSummary.auc
+            ? parseFloat(trainingSummary.accuracy.toFixed(2))
+            : 0,
+        },
+      ]
       : [];
 
     type DataTag =

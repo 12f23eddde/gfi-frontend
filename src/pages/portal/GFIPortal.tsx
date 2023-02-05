@@ -9,7 +9,7 @@ import {
   Nav,
   Overlay,
   Popover,
-  Row,
+  Row
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { withRouter } from 'react-router-dom';
@@ -20,7 +20,7 @@ import '../../style/gfiStyle.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createAccountNavStateAction,
-  createGlobalProgressBarAction,
+  createGlobalProgressBarAction
 } from '../../storage/reducers';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { checkIsGitRepoURL, convertFilter } from '../../utils';
@@ -33,14 +33,16 @@ import type { RepoBrief } from '../../model/api';
 import {
   GFIIssueMonitor,
   GFIRepoDisplayView,
-  GFIRepoStaticsDemonstrator,
+  GFIRepoStaticsDemonstrator
 } from '../main/GFIRepoDisplayView';
 import { GFIRepoSearchingFilterType } from '../main/mainHeader';
 import { useIsMobile } from '../app/windowContext';
 import { SearchHistory } from './SearchHistory';
 import { RepoSetting } from './RepoSetting';
 
-export interface GFIPortal {}
+export interface GFIPortal {
+}
+
 type GFIUserQueryHistoryItem = {
   pending: boolean;
   repo: RepoBrief;
@@ -50,7 +52,7 @@ type SubPanelIDs = 'Add Project' | 'Search History' | 'My Account';
 const SubPanelTitles: SubPanelIDs[] & string[] = [
   'Add Project',
   'Search History',
-  'My Account',
+  'My Account'
 ];
 
 export function GFIPortal(props: GFIPortal) {
@@ -174,7 +176,7 @@ function AccountSideBar(props: AccountSideBar) {
     <div className="flex-col flex-wrap" id="portal-side-bar">
       <div className="flex-row align-center portal-side-bar-userinfo">
         <div className="flex-col portal-side-bar-userinfo-name">
-          <div> Hello, </div>
+          <div> Hello,</div>
           <div> {userName} </div>
         </div>
         <img src={userAvatar} alt="" />
@@ -197,12 +199,12 @@ function AddProjectComponent() {
   const [mainAlarmConfig, setMainAlarmConfig] = useState<AlarmConfig>({
     show: false,
     msg: '',
-    variant: 'danger',
+    variant: 'danger'
   });
   const [addRepoAlarmConfig, setAddRepoAlarmConfig] = useState<AlarmConfig>({
     show: false,
     msg: '',
-    variant: 'success',
+    variant: 'success'
   });
 
   const dispatch = useDispatch();
@@ -221,12 +223,12 @@ function AddProjectComponent() {
       const finishedQueries: GFIUserQueryHistoryItem[] | undefined =
         res?.finished_queries?.map((info) => ({
           pending: false,
-          repo: info,
+          repo: info
         }));
       let pendingQueries: GFIUserQueryHistoryItem[] | undefined =
         res?.queries?.map((info) => ({
           pending: true,
-          repo: info,
+          repo: info
         }));
       if (!Array.isArray(pendingQueries)) {
         pendingQueries = [];
@@ -249,7 +251,7 @@ function AddProjectComponent() {
           setAddRepoAlarmConfig({
             show: true,
             msg: `Repos: ${completeQueries}have been successfully added`,
-            variant: 'success',
+            variant: 'success'
           });
         }
       }
@@ -298,7 +300,7 @@ function AddProjectComponent() {
                 setMainAlarmConfig({
                   show: true,
                   msg: `Query ${repoOwner}/${repoName} ${result}`,
-                  variant: 'success',
+                  variant: 'success'
                 });
                 fetchAddedRepos(() => {
                   hideProgressBar();
@@ -306,8 +308,8 @@ function AddProjectComponent() {
               } else {
                 setMainAlarmConfig({
                   show: true,
-                  msg: `Connection Lost`,
-                  variant: 'danger',
+                  msg: 'Connection Lost',
+                  variant: 'danger'
                 });
                 hideProgressBar();
               }
@@ -315,8 +317,8 @@ function AddProjectComponent() {
           } else {
             setMainAlarmConfig({
               show: true,
-              msg: `You\'re not a maintainer of ${repoOwner}/${repoName} or this is a private repository`,
-              variant: 'danger',
+              msg: `You're not a maintainer of ${repoOwner}/${repoName} or this is a private repository`,
+              variant: 'danger'
             });
             hideProgressBar();
           }
@@ -364,7 +366,7 @@ function AddProjectComponent() {
     'Number of Stars',
     'Issue Resolution Time',
     '% of Issues Resolved by New Contributors',
-    '# of Predicted Good First Issues',
+    '# of Predicted Good First Issues'
   ];
 
   const onRepoHistoryClicked = (repoInfo: RepoBrief) => {
@@ -380,7 +382,8 @@ function AddProjectComponent() {
             pending={item.pending}
             repoInfo={item.repo}
             available
-            onClick={item.pending ? () => {} : onRepoHistoryClicked}
+            onClick={item.pending ? () => {
+            } : onRepoHistoryClicked}
             key={i}
           />
         );
@@ -394,7 +397,7 @@ function AddProjectComponent() {
           owner: 'Try to add your projects!',
           description: '',
           language: '',
-          topics: [],
+          topics: []
         }}
         available={false}
       />
@@ -412,7 +415,7 @@ function AddProjectComponent() {
   }, [filterSelected]);
 
   const isMobile = useIsMobile();
-
+  
   return (
     <div className="flex-col">
       {mainAlarmConfig.show ? (
@@ -421,7 +424,7 @@ function AddProjectComponent() {
           onClose={() =>
             setMainAlarmConfig({
               show: false,
-              msg: '',
+              msg: ''
             })
           }
           variant={mainAlarmConfig?.variant}
@@ -542,7 +545,7 @@ function AddProjectComponent() {
               setAddRepoAlarmConfig({
                 show: false,
                 msg: '',
-                variant: 'success',
+                variant: 'success'
               });
             }}
             variant={addRepoAlarmConfig.variant}
@@ -584,12 +587,12 @@ function AddProjectComponent() {
                 repoInfo={addedRepoDisplayPanelConfig}
                 paging={false}
                 key={3}
-              />,
+              />
             ]}
             style={{
               marginBottom: '0.5rem',
               transition: '0.2s',
-              display: showPopover ? '' : 'none',
+              display: showPopover ? '' : 'none'
             }}
             ref={repoInfoPanelRef}
           />

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
-import { userInfo } from "../storage";
-import { GFIResponse } from "../model/api";
+import { userInfo } from '../storage';
+import { GFIResponse } from '../model/api';
 
 type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'PUT';
 type ErrorFunc = null | ((error: Error | AxiosError) => any);

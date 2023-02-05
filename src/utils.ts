@@ -23,7 +23,7 @@ export const checkIsPercentage = (val: string) => {
 
 // ↑ above shouldn't work with browsers
 export const checkIsGitRepoURL = (val: string) => {
-  return /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:/\-~]+)(\.git)?(\/)?/.test(
+  return /((git|ssh|http(s)?)|(git@[\w.]+))(:(\/\/)?)([\w.@:/\-~]+)(\.git)?(\/)?/.test(
     val
   );
 };
@@ -44,7 +44,7 @@ const filterNames = {
   'popularity': 'Number of Stars',
   'median_issue_resolve_time': 'Issue Resolution Time',
   'newcomer_friendly': '% of Issues Resolved by New Contributors',
-  'gfis': '# of Predicted Good First Issues',
+  'gfis': '# of Predicted Good First Issues'
 };
 
 const nameToFilter = Object.keys(filterNames).reduce((acc, cur) => {

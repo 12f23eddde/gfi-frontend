@@ -58,20 +58,20 @@ export const loginReducer: Reducer<LoginState, LoginAction | LogoutAction> = (
   action: LoginAction | LogoutAction
 ) => {
   switch (action.type) {
-    case LOGIN: {
-      return {
-        hasLogin: true,
-        id: action.id,
-        loginName: action.loginName,
-        name: action.name,
-        token: action.token,
-        avatar: action.avatar,
-      };
-    }
-    case LOGOUT:
-      return { hasLogin: false };
-    default:
-      return state;
+  case LOGIN: {
+    return {
+      hasLogin: true,
+      id: action.id,
+      loginName: action.loginName,
+      name: action.name,
+      token: action.token,
+      avatar: action.avatar,
+    };
+  }
+  case LOGOUT:
+    return { hasLogin: false };
+  default:
+    return state;
   }
 };
 

@@ -422,7 +422,7 @@ export const GFIOverlay = forwardRef<HTMLDivElement, GFIOverlay>(
           gsap
             .to(selfRef.current, {
               duration: 0.4,
-              left: `0`,
+              left: '0',
               ease: 'power3.out',
             })
             .play();

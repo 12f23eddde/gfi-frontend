@@ -105,7 +105,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
           setGfiNum(res);
         }
       });
-      getTrainingSummary("","").then((res) => {
+      getTrainingSummary('','').then((res) => {
         if (res && res.length > 0) {
           setModelTrainingSummary(res[0]);
         }
