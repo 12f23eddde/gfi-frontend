@@ -4,14 +4,24 @@ import { GFIRepoBasicProp } from '../main/GFIRepoDisplayView';
 
 import '../../style/gfiStyle.css';
 import { GFIAlert, GFIAlertPanelVariants } from '../../components';
+// import {
+//   deleteRepoQuery,
+//   getRepoConfig,
+//   updateRepoConfig,
+//   updateRepoInfo,
+//   updateTags
+// } from '../../api/api';
+
 import {
-  deleteRepoQuery,
-  getRepoConfig,
-  updateRepoConfig,
-  updateRepoInfo,
-  updateTags
-} from '../../api/api';
-import type { RepoGFIConfig } from '../../model/api';
+  deleteUserRepo,
+  getUserRepoConfig,
+  getRecommendedRepoConfig,
+  updateUserRepoConfig,
+  forceLabelIssues,
+  forceUpdateRepo
+} from '../../api/gfibot';
+import type { UserRepoConfig } from '../../api/gfibot';
+
 import { checkIsNumber } from '../../utils';
 
 export type RepoSettingPops = GFIRepoBasicProp;

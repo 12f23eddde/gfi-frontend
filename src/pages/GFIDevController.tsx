@@ -6,7 +6,7 @@ import '../style/gfiStyle.css';
 import { useIsMobile } from './app/context';
 import { Button, Form } from 'react-bootstrap';
 
-import { getBaseURL, URL_KEY } from '../api/query';
+import { getBaseURL, URL_KEY } from '../api/request';
 import { checkIsValidUrl } from '../utils';
 
 export function GFIDevController() {

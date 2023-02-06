@@ -1,6 +1,9 @@
 import React, { ForwardedRef, forwardRef, useEffect, useState } from 'react';
-import type { GFITrainingSummary } from '../../model/api';
-import { getGFINum, getTrainingSummary } from '../../api/api';
+// import type { GFITrainingSummary } from '../../model/api';
+// import { getGFINum, getTrainingSummary } from '../../api/api';
+
+import type { RepoDynamics } from '../../api/gfibot.d';
+import { getIssueCount, getModelPerformance, getRepoDynamics } from '../../api/gfibot';
 
 import '../../style/gfiStyle.css';
 import { Group } from '@visx/group';
@@ -12,10 +15,11 @@ import {
   GradientOrangeRed,
   GradientTealBlue,
   GradientPurpleTeal,
-  GradientPinkBlue,
+  GradientPinkBlue
 } from '@visx/gradient';
 
-export interface GFITrainingSummaryDisplayView {}
+export interface GFITrainingSummaryDisplayView {
+}
 
 interface TrainingSummary {
   issueNumTest: number;
@@ -33,8 +37,9 @@ const ActivityTags: ActivityTagType[] = [
   '1Month',
   '3Months',
   '1Year',
-  'Older',
+  'Older'
 ];
+
 interface RepoActivity {
   time: ActivityTagType;
   num: number;
@@ -83,7 +88,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
     >(
       ActivityTags.map((item) => ({
         time: item,
-        num: 0,
+        num: 0
       }))
     );
     const indexMapping: { [key in ActivityTagType]: number } = {
@@ -91,7 +96,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
       '1Month': 1,
       '3Months': 2,
       '1Year': 3,
-      Older: 4,
+      Older: 4
     };
 
     useEffect(() => {
@@ -105,7 +110,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
           setGfiNum(res);
         }
       });
-      getTrainingSummary('','').then((res) => {
+      getTrainingSummary('', '').then((res) => {
         if (res && res.length > 0) {
           setModelTrainingSummary(res[0]);
         }
@@ -123,7 +128,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
         let resolvedByNewcomers = 0;
         const repoActivity: RepoActivity[] = ActivityTags.map((item) => ({
           time: item,
-          num: 0,
+          num: 0
         }));
         for (const summary of originTrainingSummary) {
           issueNumTest += summary.issues_test;
@@ -144,7 +149,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
           avgAcc: modelTrainingSummary ? modelTrainingSummary.accuracy : totalAcc / issueNumTrain,
           avgAuc: modelTrainingSummary ? modelTrainingSummary.auc : totalAuc / issueNumTrain,
           issueResolved: resolved,
-          issueResolvedByNewcomers: resolvedByNewcomers,
+          issueResolvedByNewcomers: resolvedByNewcomers
         });
       }
     }, [originTrainingSummary]);
@@ -170,7 +175,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
               style={{
                 marginLeft: `${fullChartDefaultHorizontalMargin}px`,
                 marginRight: `${fullChartDefaultHorizontalMargin}px`,
-                marginBottom: '0.5rem',
+                marginBottom: '0.5rem'
               }}
             >
               <div className="flex-row gfi-training-nums-displayer-item">
@@ -239,7 +244,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
                 height={fullChartHeight}
                 data={[
                   { name: 'AUC', value: displayedSummary.avgAuc },
-                  { name: 'ACC', value: displayedSummary.avgAcc },
+                  { name: 'ACC', value: displayedSummary.avgAcc }
                 ]}
               />
             </div>
@@ -318,7 +323,7 @@ function AucAccBarDisplayer(props: {
   const yScale = scaleLinear<number>({
     domain: [0, 1],
     range: [0, width],
-    nice: true,
+    nice: true
   });
 
   return (
@@ -391,7 +396,7 @@ function ActivityDisplayer(props: {
 
   const yScale = scaleLinear<number>({
     domain: [0, getMaxY()],
-    range: [graphHeight, 0],
+    range: [graphHeight, 0]
   });
 
   const marginX = (width - graphWidth * 0.8) / 2.0;

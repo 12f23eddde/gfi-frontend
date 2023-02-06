@@ -25,7 +25,10 @@ import { gsap } from 'gsap';
 
 import { useIsMobile } from './app/context';
 import { defaultFontFamily } from '../utils';
-import { gitHubLogin } from '../api/githubApi';
+// import { gitHubLogin } from '../api/githubApi';
+
+import { redirectToGitHubOAuth } from '../api/github';
+
 import {
   createAccountNavStateAction,
   createLogoutAction

@@ -12,7 +12,7 @@ import '../../style/gfiStyle.css';
 import { useSelector } from 'react-redux';
 
 import { useData } from '../app/context';
-import { getRepoLanguages } from '../../api_new/gfibot';
+import { getRepoLanguages } from '../../api/gfibot';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { MainPageLangTagSelectedState } from '../../storage/reducers';
 

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { userInfo } from '../storage';
-import { GFIResponse, GFIPaginated } from '../api_new/gfibot.d';
+import { GFIResponse, GFIPaginated } from './/gfibot.d';
 
 type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'PUT';
 type ErrorFunc = null | ((error: Error | AxiosError) => any);

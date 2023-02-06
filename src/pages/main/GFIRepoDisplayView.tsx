@@ -22,13 +22,13 @@ import '../../style/gfiStyle.css';
 import { GFIOverlay } from '../../components';
 import { GFIPagination } from '../../components';
 // import { GFIInfo, GFITrainingSummary, RepoBrief } from '../../model/api';
-import { getIssueByRepoInfo } from '../../api_new/github';
+import { getIssueByRepoInfo } from '../../api/github';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { createPopoverAction } from '../../storage/reducers';
 // import { getGFIByRepoName, getGFINum, getRepoDetailedInfo } from '../../api/api';
 
-import { GFIBrief, GFIPaginated, RepoDynamics, RepoDetail } from '../../api_new/gfibot.d';
-import { getIssueCount, getIssuePaged, getRepoPaged, getRepoDynamics } from '../../api_new/gfibot';
+import { GFIBrief, GFIPaginated, RepoDynamics, RepoDetail } from '../../api/gfibot.d';
+import { getIssueCount, getIssuePaged, getRepoPaged, getRepoDynamics } from '../../api/gfibot';
 import { useIsMobile, useData } from '../app/context';
 import { RepoGraphContainer } from '../repositories/repoDataDemonstrator';
 import { checkIsNumber } from '../../utils';

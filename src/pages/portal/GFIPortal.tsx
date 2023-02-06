@@ -26,10 +26,15 @@ import { GFIRootReducers } from '../../storage/configureStorage';
 import { checkIsGitRepoURL, convertFilter } from '../../utils';
 
 import importTips from '../../assets/git-add-demo.png';
-import { checkHasRepoPermissions } from '../../api/githubApi';
+// import { checkHasRepoPermissions } from '../../api/githubApi';
 import { GFIAlert, GFIAlertPanelVariants, GFIOverlay } from '../../components';
-import { addRepoToGFIBot, getAddRepoHistory } from '../../api/api';
-import type { RepoBrief } from '../../model/api';
+// import { addRepoToGFIBot, getAddRepoHistory } from '../../api/api';
+
+import { addUserRepo, getUserRepoList } from '../../api/gfibot';
+import { checkHasRepoPermissions } from '../../api/github';
+
+import type { RepoDetail } from '../../api/gfibot';
+
 import {
   GFIIssueMonitor,
   GFIRepoDisplayView,

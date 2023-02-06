@@ -1,5 +1,7 @@
 import { GFIRepoSearchingFilterType } from './pages/main/mainHeader';
-import { RepoSort } from './model/api';
+// import { RepoSort } from './model/api';
+
+import type { RepoSort } from './api/gfibot.d';
 
 export const checkIsNumber = (val: string | number | undefined) => {
   const reg = /^\d+.?\d*/;

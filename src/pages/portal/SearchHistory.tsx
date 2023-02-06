@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { ListGroup } from 'react-bootstrap';
 import { DeleteOutlined } from '@ant-design/icons';
-import type { RepoBrief, SearchedRepo } from '../../model/api';
-import { deleteUserSearch, getRepoInfo, getUserSearches } from '../../api/api';
+
+import type { RepoDetail, UserSearchedRepo } from '../../api/gfibot.d';
+// import { deleteUserSearch, getRepoInfo, getUserSearches } from '../../api/api';
+
+import { deleteUserSearchRepo, getUserSearchRepos } from '../../api/gfibot';
 
 import '../../style/gfiStyle.css';
 import {

@@ -4,11 +4,12 @@ import '../../style/gfiStyle.css';
 
 import { useDispatch } from 'react-redux';
 import { checkIsNumber } from '../../utils';
-import { GFIAlert } from '../../components/GFIAlert';
-import { GFIPagination } from '../../components/GFIPagination';
+import { GFIAlert } from '../../components';
+import { GFIPagination } from '../../components';
 import { RepoGraphContainer } from './repoDataDemonstrator';
 
-import { getRepoNum, getPagedRepoDetailedInfo } from '../../api/api';
+// import { getRepoNum, getPagedRepoDetailedInfo } from '../../api/api';
+import { getRepoPaged } from '../../api/gfibot';
 
 import {
   createAccountNavStateAction,

@@ -11,15 +11,27 @@ import { checkIsGitRepoURL, checkIsNumber, convertFilter, defaultFontFamily } fr
 import { GFINotiToast } from '../login/GFILoginComponents';
 import { GFIAlert } from '../../components';
 import { GFIPagination } from '../../components';
+// import {
+//   getLanguageTags,
+//   getPagedRepoBrief,
+//   getRepoInfo,
+//   getRepoNum,
+//   getTrainingSummary,
+//   searchRepoInfoByNameOrURL
+// } from '../../api/api';
+
+
 import {
-  getLanguageTags,
-  getPagedRepoBrief,
-  getRepoInfo,
-  getRepoNum,
-  getTrainingSummary,
-  searchRepoInfoByNameOrURL
-} from '../../api/api';
-import { checkGithubLogin } from '../../api/githubApi';
+  getRepoLanguages,
+  getRepoPaged,
+  getRepoDynamics,
+  getModelPerformance,
+  searchRepoPaged
+} from '../../api/gfibot';
+
+// import { checkGithubLogin } from '../../api/githubApi';
+
+import { checkGithubLogin } from '../../api/github';
 
 import {
   createGlobalProgressBarAction,
@@ -31,7 +43,8 @@ import {
 import { GFI_REPO_FILTER_NONE, GFIMainPageHeader } from './mainHeader';
 
 import { GFIIssueMonitor, GFIRepoDisplayView, GFIRepoStaticsDemonstrator } from './GFIRepoDisplayView';
-import { GFITrainingSummary, RepoBrief, RepoSort } from '../../model/api';
+// import { GFITrainingSummary, RepoBrief, RepoSort } from '../../model/api';
+import { TrainingResult, RepoSort, RepoDynamics, RepoDetail } from '../../api/gfibot.d';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { GFITrainingSummaryDisplayView } from './GFITrainingSummaryDisplayView';
 
