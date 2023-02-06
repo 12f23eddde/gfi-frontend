@@ -38,37 +38,8 @@ export const getBaseURL = () => {
   return baseURL;
 };
 
-/** wrapper for request data **/
-export const requestGFIPaginated = async <T>(
-  params: RequestParams
-): Promise<GFIPaginated<T> | undefined> => {
-  const { githubToken } = userInfo();
-  if (githubToken) params.headers = { Authorization: `token ${githubToken}` };
-  const res = await asyncRequest<GFIPaginated<T>>(params);
-  if (res && 200 <= res.code && res.code < 300 && typeof res.result === 'object') {
-    return res;
-  }
-  return undefined;
-};
-
-/** wrapper for request data **/
-export const requestGFI = async <T>(
-  params: RequestParams
-): Promise<T | undefined> => {
-  // if token exists, add token to headers
-  const { githubToken } = userInfo();
-  if (githubToken) params.headers = { Authorization: `token ${githubToken}` };
-  const res = await asyncRequest<GFIResponse<T>>(params);
-  if (res && 200 <= res.code && res.code < 300 && res.result) {
-    return res.result;
-  }
-  return undefined;
-};
-
 /** request wrapper */
-export const asyncRequest: <T>(
-  params: RequestParams
-) => Promise<T | undefined> = async (params: RequestParams) => {
+export const asyncRequest = async <T>(params: RequestParams): Promise<T | undefined> => {
   try {
     const method = params.method || 'GET';
     const baseURL = params.baseURL || getBaseURL();

@@ -4,15 +4,15 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 
-const windowContext = createContext<{ width: number; height: number }>(
+const context = createContext<{ width: number; height: number }>(
   {} as any
 );
 
 export const WindowContextProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   const [width, setWidth] = useState<number>(window.innerWidth);
   const [height, setHeight] = useState<number>(window.innerHeight);
@@ -30,21 +30,21 @@ export const WindowContextProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <windowContext.Provider value={{ width, height }}>
+    <context.Provider value={{ width, height }}>
       {children}
-    </windowContext.Provider>
+    </context.Provider>
   );
 };
 
 export const useWindowSize = () => {
-  const { width, height } = useContext(windowContext);
+  const { width, height } = useContext(context);
   return { width, height };
 };
 
 export const mobileThreshold = 700;
 
 export const useIsMobile = () => {
-  const { width } = useContext(windowContext);
+  const { width } = useContext(context);
   return width <= mobileThreshold;
 };
 
@@ -53,7 +53,7 @@ const GlobalRefContext = createContext<{ ref: RefObject<HTMLDivElement> }>(
 );
 
 export const GlobalRefProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -67,4 +67,30 @@ export const GlobalRefProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useGlobalRef = () => {
   const { ref } = useContext(GlobalRefContext);
   return ref;
+};
+
+export const useData = <T, >(
+  { promise, params, deps = [] }:
+    {
+      promise: (params: unknown) => Promise<T>;
+      params?: unknown;
+      deps?: unknown[];
+    }
+): T | null => {
+  const [data, setData] = useState<T>(null);
+
+  useEffect(() => {
+    let ignore = false;
+    promise(params)
+      .then((data) => {
+        if (!ignore) {
+          setData(data);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [promise, params, ...deps]);
+
+  return data;
 };

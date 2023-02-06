@@ -1,8 +1,8 @@
 import React, {
   forwardRef,
   MouseEventHandler,
-  useEffect,
-  useState,
+  useEffect, useMemo,
+  useState
 } from 'react';
 import { Container, Col, Form, Button, Dropdown } from 'react-bootstrap';
 import { SearchOutlined } from '@ant-design/icons';
@@ -10,7 +10,9 @@ import { SearchOutlined } from '@ant-design/icons';
 import './mainPage.css';
 import '../../style/gfiStyle.css';
 import { useSelector } from 'react-redux';
-import { getLanguageTags } from '../../api/api';
+
+import { useData } from '../app/context';
+import { getRepoLanguages } from '../../api_new/gfibot';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { MainPageLangTagSelectedState } from '../../storage/reducers';
 
@@ -41,7 +43,7 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
     'Number of Stars',
     'Issue Resolution Time',
     '% of Issues Resolved by New Contributors',
-    '# of Predicted Good First Issues',
+    '# of Predicted Good First Issues'
   ];
 
   const renderDropDownItem = (
@@ -52,7 +54,7 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
       <Dropdown.Item
         onClick={onClick}
         style={{
-          fontSize: 'small',
+          fontSize: 'small'
         }}
         key={title}
       >
@@ -72,15 +74,11 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
     });
   };
 
-  const [tagArray, setTagArray] = useState<string[]>(['All']);
+  const repoLanguages = useData<string[]>({
+    promise: getRepoLanguages
+  });
+  const tagArray = repoLanguages ? [...repoLanguages, 'All'] : [];
   const [tagSelected, setTagSelected] = useState('All');
-  useEffect(() => {
-    getLanguageTags().then((res) => {
-      if (res) {
-        setTagArray(['All', ...res]);
-      }
-    });
-  }, []);
 
   const globalSelectedTag = useSelector<
     GFIRootReducers,
@@ -151,14 +149,14 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
             <div
               className="flex-row align-center"
               style={{
-                marginTop: '0.5rem',
+                marginTop: '0.5rem'
               }}
             >
               <div className="flex-row align-center">
                 <div className="main-dropdown-tags">Sort by</div>
                 <Dropdown
                   style={{
-                    marginRight: '1rem',
+                    marginRight: '1rem'
                   }}
                 >
                   <Dropdown.Toggle
@@ -170,7 +168,7 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
                   <Dropdown.Menu
                     variant="dark"
                     style={{
-                      minWidth: '7rem',
+                      minWidth: '7rem'
                     }}
                   >
                     {renderDefaultDropDownItems()}
@@ -190,7 +188,7 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
                   <Dropdown.Menu
                     variant="dark"
                     style={{
-                      minWidth: '7rem',
+                      minWidth: '7rem'
                     }}
                   >
                     {renderTagMenu()}

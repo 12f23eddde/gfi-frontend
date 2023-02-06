@@ -2,27 +2,22 @@ import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Container, Col, Row } from 'react-bootstrap';
-import { useIsMobile, useWindowSize } from '../app/windowContext';
+import { Col, Container, Row } from 'react-bootstrap';
+import { useIsMobile, useWindowSize } from '../app/context';
 
 import '../../style/gfiStyle.css';
-import {
-  checkIsNumber,
-  defaultFontFamily,
-  checkIsGitRepoURL,
-  convertFilter,
-} from '../../utils';
+import { checkIsGitRepoURL, checkIsNumber, convertFilter, defaultFontFamily } from '../../utils';
 
 import { GFINotiToast } from '../login/GFILoginComponents';
-import { GFIAlarm, GFIPagination } from '../GFIComponents';
+import { GFIAlert } from '../../components';
+import { GFIPagination } from '../../components';
 import {
-  getRepoNum,
   getLanguageTags,
-  searchRepoInfoByNameOrURL,
-  getPagedRepoDetailedInfo,
-  getTrainingSummary,
-  getRepoInfo,
   getPagedRepoBrief,
+  getRepoInfo,
+  getRepoNum,
+  getTrainingSummary,
+  searchRepoInfoByNameOrURL
 } from '../../api/api';
 import { checkGithubLogin } from '../../api/githubApi';
 
@@ -31,16 +26,12 @@ import {
   createLogoutAction,
   createMainPageLangTagSelectedAction,
   createPopoverAction,
-  MainPageLangTagSelectedState,
+  MainPageLangTagSelectedState
 } from '../../storage/reducers';
 import { GFI_REPO_FILTER_NONE, GFIMainPageHeader } from './mainHeader';
 
-import {
-  GFIIssueMonitor,
-  GFIRepoDisplayView,
-  GFIRepoStaticsDemonstrator,
-} from './GFIRepoDisplayView';
-import { RepoBrief, GFITrainingSummary, RepoSort } from '../../model/api';
+import { GFIIssueMonitor, GFIRepoDisplayView, GFIRepoStaticsDemonstrator } from './GFIRepoDisplayView';
+import { GFITrainingSummary, RepoBrief, RepoSort } from '../../model/api';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { GFITrainingSummaryDisplayView } from './GFITrainingSummaryDisplayView';
 
@@ -75,7 +66,7 @@ export function MainPage() {
     owner: '',
     description: '',
     language: '',
-    topics: [],
+    topics: []
   };
 
   const [displayRepoInfo, setDisplayRepoInfo] = useState<
@@ -152,7 +143,7 @@ export function MainPage() {
       setPageIdx(1);
       dispatch(
         createMainPageLangTagSelectedAction({
-          tagSelected: selectedTag,
+          tagSelected: selectedTag
         })
       );
     }
@@ -213,7 +204,7 @@ export function MainPage() {
               owner: repo.owner,
               language: repo.language ? repo.language : undefined,
               description: repo.description ? repo.description : undefined,
-              topics: 'topics' in repo ? repo.topics : undefined,
+              topics: 'topics' in repo ? repo.topics : undefined
             };
           }
           return emptyRepoInfo;
@@ -277,12 +268,12 @@ export function MainPage() {
                 repoInfo={item}
                 trainingSummary={summary}
                 key={2}
-              />,
+              />
             ]}
             style={{
               border: '1px solid var(--color-border-default)',
               borderRadius: '7px',
-              marginBottom: '1rem',
+              marginBottom: '1rem'
             }}
           />
         );
@@ -300,7 +291,7 @@ export function MainPage() {
             style={{
               padding: '0px',
               marginLeft: '0px',
-              width: isMobile ? '100%' : '65%',
+              width: isMobile ? '100%' : '65%'
             }}
           >
             {renderInfoComponent()}
@@ -327,7 +318,7 @@ export function MainPage() {
                 width: '35%',
                 maxWidth: '430px',
                 minWidth: '310px',
-                padding: '0',
+                padding: '0'
               }}
             >
               <div className="flex-col align-center">
@@ -339,7 +330,7 @@ export function MainPage() {
                       setSelectedTag(undefined);
                       dispatch(
                         createMainPageLangTagSelectedAction({
-                          tagSelected: 'All',
+                          tagSelected: 'All'
                         })
                       );
                     }
@@ -362,11 +353,11 @@ export function MainPage() {
         <Row
           style={{
             marginBottom: alarmConfig.show ? '-15px' : '0',
-            marginTop: alarmConfig.show ? '15px' : '0',
+            marginTop: alarmConfig.show ? '15px' : '0'
           }}
         >
           {alarmConfig.show ? (
-            <GFIAlarm
+            <GFIAlert
               title={alarmConfig.msg}
               onClose={() => {
                 setAlarmConfig({ show: false, msg: alarmConfig.msg });
@@ -382,7 +373,7 @@ export function MainPage() {
               style={{
                 padding: '0px',
                 marginLeft: '0px',
-                maxWidth: isMobile ? '100%' : '60%',
+                maxWidth: isMobile ? '100%' : '60%'
               }}
             >
               <GFIMainPageHeader
@@ -443,7 +434,7 @@ export function MainPage() {
           height,
           position: 'fixed',
           top: '0',
-          zIndex: '-1000',
+          zIndex: '-1000'
         }}
         className="background"
       />
@@ -517,7 +508,7 @@ const GFIDadaKanban = forwardRef((props: GFIDadaKanban, ref) => {
     <div
       className="gfi-wrapper kanban"
       style={{
-        fontFamily: defaultFontFamily,
+        fontFamily: defaultFontFamily
       }}
     >
       {/* <GFIAlphaWarning /> */}

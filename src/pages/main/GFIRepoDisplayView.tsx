@@ -9,8 +9,9 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useMemo
 } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import remarkGfm from 'remark-gfm';
@@ -18,29 +19,19 @@ import remarkGemoji from 'remark-gemoji';
 import ReactMarkdown from 'react-markdown';
 
 import '../../style/gfiStyle.css';
-import {
-  GFIOverlay,
-  GFIPagination,
-  GFISimplePagination,
-} from '../GFIComponents';
-import {
-  GFIInfo,
-  RepoBrief,
-  RepoDetail,
-  GFITrainingSummary,
-} from '../../model/api';
-import { getIssueByRepoInfo } from '../../api/githubApi';
+import { GFIOverlay } from '../../components';
+import { GFIPagination } from '../../components';
+// import { GFIInfo, GFITrainingSummary, RepoBrief } from '../../model/api';
+import { getIssueByRepoInfo } from '../../api_new/github';
 import { GFIRootReducers } from '../../storage/configureStorage';
 import { createPopoverAction } from '../../storage/reducers';
-import {
-  getGFIByRepoName,
-  getGFINum,
-  getRepoDetailedInfo,
-  getTrainingSummary,
-} from '../../api/api';
-import { useIsMobile } from '../app/windowContext';
+// import { getGFIByRepoName, getGFINum, getRepoDetailedInfo } from '../../api/api';
+
+import { GFIBrief, GFIPaginated, RepoDynamics, RepoDetail } from '../../api_new/gfibot.d';
+import { getIssueCount, getIssuePaged, getRepoPaged, getRepoDynamics } from '../../api_new/gfibot';
+import { useIsMobile, useData } from '../app/context';
 import { RepoGraphContainer } from '../repositories/repoDataDemonstrator';
-import { checkHasUndefinedProperty, checkIsNumber } from '../../utils';
+import { checkIsNumber } from '../../utils';
 
 export interface RepoShouldDisplayPopoverState {
   shouldDisplayPopover?: boolean;
@@ -49,7 +40,7 @@ export interface RepoShouldDisplayPopoverState {
 }
 
 export interface GFIRepoBasicProp {
-  repoInfo: RepoBrief;
+  repoInfo: RepoDetail;
 }
 
 export interface GFIRepoDisplayView extends GFIRepoBasicProp {
@@ -333,7 +324,7 @@ export const GFIIssueMonitor = forwardRef((props: GFIIssueMonitor, ref) => {
           style={{
             marginRight: '0.7rem',
             marginLeft: '0.7rem',
-            marginBottom: '0.3rem',
+            marginBottom: '0.3rem'
           }}
         >
           <GFIPagination
@@ -363,6 +354,7 @@ export interface GFIIssueListItem extends GFIRepoBasicProp {
 }
 
 type IssueState = 'closed' | 'open' | 'resolved';
+
 interface IssueDisplayData {
   issueId: number;
   title: string;
@@ -379,11 +371,11 @@ function GFIIssueListItem(props: GFIIssueListItem) {
   const [displayData, setDisplayData] = useState<IssueDisplayData>();
 
   const updateIssue = async () => {
-    const res = await getIssueByRepoInfo(
-      repoInfo.name,
-      repoInfo.owner,
-      issue.number
-    );
+    const res = await getIssueByRepoInfo({
+      name: repoInfo.name,
+      owner: repoInfo.owner,
+      number: issue.number
+    });
     if (res) {
       let issueState: IssueState = 'open';
       if (res.state === 'closed') {
@@ -398,7 +390,7 @@ function GFIIssueListItem(props: GFIIssueListItem) {
         body: res.body,
         state: issueState,
         url: res.html_url,
-        gfi: issue,
+        gfi: issue
       });
     }
   };
@@ -410,7 +402,7 @@ function GFIIssueListItem(props: GFIIssueListItem) {
       title: issue.title,
       state: issue.state,
       url: `https://github.com/${repoInfo.owner}/${repoInfo.name}/issues/${issue.number}`,
-      gfi: issue,
+      gfi: issue
     });
     // update from github later
     updateIssue();
@@ -440,7 +432,7 @@ function GFIIssueListItem(props: GFIIssueListItem) {
             trainingSummary={trainingSummary}
           />
         ),
-        popoverID: overlayID,
+        popoverID: overlayID
       };
       dispatch(createPopoverAction(callbackProp));
     },
@@ -455,7 +447,7 @@ function GFIIssueListItem(props: GFIIssueListItem) {
       <div
         style={{
           width: '9%',
-          minWidth: '70px',
+          minWidth: '70px'
         }}
       >
         {issueBtn()}
@@ -469,7 +461,7 @@ function GFIIssueListItem(props: GFIIssueListItem) {
             width: '6%',
             minWidth: '65px',
             marginLeft: 'auto',
-            paddingLeft: '0.3rem',
+            paddingLeft: '0.3rem'
           }}
           className="flex-row justify-content-center align-center"
         >
@@ -510,24 +502,24 @@ function IssueOverlayItem(props: IssueOverlayItem) {
     ? [
       {
         title: 'Issues Resolved',
-        data: trainingSummary.n_resolved_issues,
+        data: trainingSummary.n_resolved_issues
       },
       {
         title: 'Resolved By Newcomers',
-        data: trainingSummary.n_newcomer_resolved,
+        data: trainingSummary.n_newcomer_resolved
       },
       {
         title: 'AUC',
         data: trainingSummary.auc
           ? parseFloat(trainingSummary.auc.toFixed(2))
-          : 0,
+          : 0
       },
       {
         title: 'ACC',
         data: trainingSummary.auc
           ? parseFloat(trainingSummary.auc.toFixed(2))
-          : 0,
-      },
+          : 0
+      }
     ]
     : [];
 
@@ -536,7 +528,7 @@ function IssueOverlayItem(props: IssueOverlayItem) {
     <div
       className="flex-col repo-overlay-item"
       style={{
-        margin: '1rem 1.5rem',
+        margin: '1rem 1.5rem'
       }}
     >
       <div className="gfi-overlay-info-title">
@@ -569,7 +561,7 @@ function IssueOverlayItem(props: IssueOverlayItem) {
       <div
         className="flex-row align-center"
         style={{
-          margin: '1rem 0',
+          margin: '1rem 0'
         }}
       >
         {issueBtn()}
@@ -577,7 +569,7 @@ function IssueOverlayItem(props: IssueOverlayItem) {
           style={{
             fontWeight: 'bold',
             fontSize: 'larger',
-            marginLeft: '0.7rem',
+            marginLeft: '0.7rem'
           }}
         >
           {displayData?.title}
@@ -612,24 +604,24 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
       ? [
         {
           title: 'Issues Resolved',
-          data: trainingSummary.n_resolved_issues,
+          data: trainingSummary.n_resolved_issues
         },
         {
           title: 'Resolved By Newcomers',
-          data: trainingSummary.n_newcomer_resolved,
+          data: trainingSummary.n_newcomer_resolved
         },
         {
           title: 'AUC',
           data: trainingSummary.auc
             ? parseFloat(trainingSummary.auc.toFixed(2))
-            : 0,
+            : 0
         },
         {
           title: 'ACC',
           data: trainingSummary.auc
             ? parseFloat(trainingSummary.accuracy.toFixed(2))
-            : 0,
-        },
+            : 0
+        }
       ]
       : [];
 
@@ -644,13 +636,13 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
       'monthly_stars',
       'monthly_commits',
       'monthly_issues',
-      'monthly_pulls',
+      'monthly_pulls'
     ];
     const dataTitle = [
       'Monthly Stars',
       'Monthly Commits',
       'Monthly Issues',
-      'Monthly Pulls',
+      'Monthly Pulls'
     ];
     const [title, setTitle] = useState<string[]>();
     const [selectedIdx, setSelectedIdx] = useState(0);

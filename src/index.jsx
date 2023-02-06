@@ -20,10 +20,10 @@ import { MainPage } from './pages/main/mainPage';
 import { LoginRedirect } from './pages/login/GFILoginComponents';
 import {
   GlobalRefProvider,
-  WindowContextProvider,
-} from './pages/app/windowContext';
+  WindowContextProvider
+} from './pages/app/context';
 import { GFIPortal } from './pages/portal/GFIPortal';
-import { GFICopyright } from './pages/GFIComponents';
+import { GFICopyright } from './components/GFICopyright';
 
 ReactDOM.render(
   <React.StrictMode>

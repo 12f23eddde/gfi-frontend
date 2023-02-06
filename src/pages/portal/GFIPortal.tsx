@@ -27,7 +27,7 @@ import { checkIsGitRepoURL, convertFilter } from '../../utils';
 
 import importTips from '../../assets/git-add-demo.png';
 import { checkHasRepoPermissions } from '../../api/githubApi';
-import { GFIAlarm, GFIAlarmPanelVariants, GFIOverlay } from '../GFIComponents';
+import { GFIAlert, GFIAlertPanelVariants, GFIOverlay } from '../../components';
 import { addRepoToGFIBot, getAddRepoHistory } from '../../api/api';
 import type { RepoBrief } from '../../model/api';
 import {
@@ -36,7 +36,7 @@ import {
   GFIRepoStaticsDemonstrator
 } from '../main/GFIRepoDisplayView';
 import { GFIRepoSearchingFilterType } from '../main/mainHeader';
-import { useIsMobile } from '../app/windowContext';
+import { useIsMobile } from '../app/context';
 import { SearchHistory } from './SearchHistory';
 import { RepoSetting } from './RepoSetting';
 
@@ -193,7 +193,7 @@ function AddProjectComponent() {
   type AlarmConfig = {
     show: boolean;
     msg: string;
-    variant?: GFIAlarmPanelVariants;
+    variant?: GFIAlertPanelVariants;
   };
 
   const [mainAlarmConfig, setMainAlarmConfig] = useState<AlarmConfig>({
@@ -415,11 +415,11 @@ function AddProjectComponent() {
   }, [filterSelected]);
 
   const isMobile = useIsMobile();
-  
+
   return (
     <div className="flex-col">
       {mainAlarmConfig.show ? (
-        <GFIAlarm
+        <GFIAlert
           title={mainAlarmConfig.msg}
           onClose={() =>
             setMainAlarmConfig({
@@ -539,7 +539,7 @@ function AddProjectComponent() {
       </div>
       {addRepoAlarmConfig.show ? (
         <div style={{ marginBottom: '-15px', marginTop: '5px' }}>
-          <GFIAlarm
+          <GFIAlert
             title={addRepoAlarmConfig.msg}
             onClose={() => {
               setAddRepoAlarmConfig({

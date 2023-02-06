@@ -1,8 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
-import { GFIAlarm, GFIOverlay } from './GFIComponents';
+import { GFIAlert } from '../components';
+import { GFIOverlay } from '../components';
 import '../style/gfiStyle.css';
-import { useIsMobile } from './app/windowContext';
+import { useIsMobile } from './app/context';
 import { Button, Form } from 'react-bootstrap';
 
 import { getBaseURL, URL_KEY } from '../api/query';
@@ -63,14 +64,14 @@ export function GFIDevController() {
         </div>
         <div className="gfi-repo-setting-item-container" id={'dev-setting'}>
           {showUpdateBanner && (
-            <GFIAlarm
+            <GFIAlert
               variant="success"
               title={updateBannerTitle}
               onClose={() => setShowUpdateBanner(false)}
             />
           )}
           {showAlarmBanner && (
-            <GFIAlarm
+            <GFIAlert
               variant="danger"
               title={alarmBannerTitle}
               onClose={() => setShowAlarmBanner(false)}
@@ -87,7 +88,7 @@ export function GFIDevController() {
                   placeholder={getBaseURL()}
                   style={{
                     borderBottomRightRadius: '0',
-                    borderTopRightRadius: '0',
+                    borderTopRightRadius: '0'
                   }}
                   onChange={(event) => {
                     if (event.target.value.length) {
@@ -101,7 +102,7 @@ export function GFIDevController() {
                   variant="outline-success"
                   style={{
                     borderBottomLeftRadius: '0',
-                    borderTopLeftRadius: '0',
+                    borderTopLeftRadius: '0'
                   }}
                   onClick={() => {
                     modifyBaseURL();
@@ -120,14 +121,14 @@ export function GFIDevController() {
                 >
                   <ReloadOutlined
                     style={{
-                      fontSize: '12px',
+                      fontSize: '12px'
                     }}
                   />
                   <div
                     style={{
                       textDecoration: 'underline',
                       marginLeft: '0.2rem',
-                      fontSize: '0.9rem',
+                      fontSize: '0.9rem'
                     }}
                   >
                     {' '}
@@ -148,7 +149,7 @@ export function GFIDevController() {
         <SettingOutlined
           style={{
             fontSize: '17px',
-            color: 'darkgray',
+            color: 'darkgray'
           }}
         />
         <div className="gfi-dev-controller-title">Dev Environment Settings</div>

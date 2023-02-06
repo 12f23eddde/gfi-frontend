@@ -137,3 +137,10 @@ export type UserSearchedRepo = {
   searched_at: string;
 };
 
+export type UserGithubProfile = {
+  github_login: string,
+  github_token: string,
+  github_name?: string,
+  github_id?: number,
+  github_avatar_url?: string
+}

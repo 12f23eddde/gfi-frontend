@@ -11,24 +11,24 @@ import {
   Button,
   Popover,
   OverlayTrigger,
-  ProgressBar,
+  ProgressBar
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
   GithubFilled,
   UserDeleteOutlined,
-  SettingOutlined,
+  SettingOutlined
 } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { gsap } from 'gsap';
 
-import { useIsMobile } from './app/windowContext';
+import { useIsMobile } from './app/context';
 import { defaultFontFamily } from '../utils';
 import { gitHubLogin } from '../api/githubApi';
 import {
   createAccountNavStateAction,
-  createLogoutAction,
+  createLogoutAction
 } from '../storage/reducers';
 import '../style/gfiStyle.css';
 
@@ -99,12 +99,12 @@ export function GFIHeader() {
             style={{
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <UserDeleteOutlined
               style={{
-                fontSize: '17px',
+                fontSize: '17px'
               }}
             />
             <Button
@@ -154,7 +154,7 @@ export function GFIHeader() {
             variant="outline-secondary"
             size="sm"
             style={{
-              marginRight: '15px',
+              marginRight: '15px'
             }}
             onClick={() => {
               if (showPopOver) {
@@ -195,14 +195,14 @@ export function GFIHeader() {
             display: 'flex',
             alignItems: 'center',
             height: '40px',
-            marginRight: '0px',
+            marginRight: '0px'
           }}
         >
           <div
             style={{
               display: 'inline-block',
               width: '80%',
-              textAlign: isMobile ? '' : 'right',
+              textAlign: isMobile ? '' : 'right'
             }}
           >
             {signInLink()}
@@ -211,7 +211,7 @@ export function GFIHeader() {
             style={{
               display: 'inline-block',
               width: '20%',
-              textAlign: 'right',
+              textAlign: 'right'
             }}
           >
             <GithubFilled
@@ -225,7 +225,7 @@ export function GFIHeader() {
                   .clear()
                   .to(iconRef.current, {
                     color: hoveredColor,
-                    duration: 0.3,
+                    duration: 0.3
                   })
                   .play();
               }}
@@ -235,7 +235,7 @@ export function GFIHeader() {
                   .clear()
                   .to(iconRef.current, {
                     color: normalColor,
-                    duration: 0.1,
+                    duration: 0.1
                   })
                   .play();
               }}
@@ -260,7 +260,7 @@ export function GFIHeader() {
             className="justify-content-end"
             style={{
               fontFamily: defaultFontFamily,
-              maxWidth: '180px',
+              maxWidth: '180px'
             }}
           >
             {renderSignInItems()}

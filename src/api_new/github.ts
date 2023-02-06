@@ -1,10 +1,10 @@
-import { requestGFI, asyncRequest, RequestParams } from './request';
+import { asyncRequest, RequestParams } from './request';
 import { userInfo } from '../storage';
 import {
   GitHubIssueResponse,
   GitHubRepoPermissions,
   GitHubHTTPResponse
-} from '../model/github';
+} from './github.d';
 
 export const requestGitHub = async <T>(params: RequestParams) => {
   // if token exists, add token to headers
@@ -22,24 +22,20 @@ export const requestGitHub = async <T>(params: RequestParams) => {
   return undefined;
 };
 
-/** redirect to gh oauth login */
-const gitHubOAuthLogin = async () => {
-  return await requestGFI<string>({
-    url: '/api/user/github/login'
-  });
-};
-
-export const gitHubLogin = () => {
-  const { hasLogin, name } = userInfo();
-  if (hasLogin && name !== undefined) {
-    window.location.reload();
-    return;
-  }
-  gitHubOAuthLogin().then((url) => {
-    if (url) {
-      window.location.assign(url);
-    }
-  });
+export const redirectToGitHubOAuth = async (
+  { client_id, redirect_uri, scope, state }: {
+    client_id: string,
+    redirect_uri?: string,
+    scope?: string,
+    state?: string
+  }) => {
+  const url = new URL('https://github.com/login/oauth/authorize');
+  url.searchParams.append('client_id', client_id);
+  if (redirect_uri) url.searchParams.append('redirect_uri', redirect_uri);
+  if (scope) url.searchParams.append('scope', scope);
+  if (state) url.searchParams.append('state', state);
+  // redirect to github oauth
+  window.location.href = url.href;
 };
 
 export const checkGithubLogin = async () => {
@@ -55,13 +51,12 @@ export const checkGithubLogin = async () => {
 
 /** User must have write access */
 export const checkHasRepoPermissions = async (
-  repoName: string,
-  owner: string
+  { name, owner }: { name: string, owner: string }
 ) => {
   const { hasLogin, githubToken } = userInfo();
   if (!hasLogin) return false;
   const res = await requestGitHub<{ permissions: GitHubRepoPermissions }>({
-    url: `https://api.github.com/repos/${owner}/${repoName}`
+    url: `https://api.github.com/repos/${owner}/${name}`
   });
   if (!res || !res.permissions) return false;
   return (
@@ -72,11 +67,9 @@ export const checkHasRepoPermissions = async (
 };
 
 export const getIssueByRepoInfo = async (
-  repoName: string,
-  owner?: string,
-  issueId?: string | number
+  { name, owner, number }: { name: string, owner: string, number: number }
 ) => {
   // url such as https://api.github.com/repos/pallets/flask/issues/4333
-  const url = `https://api.github.com/repos/${owner}/${repoName}/issues/${issueId}`;
+  const url = `https://api.github.com/repos/${owner}/${name}/issues/${number}`;
   return await requestGitHub<Partial<GitHubIssueResponse>>({ url });
 };

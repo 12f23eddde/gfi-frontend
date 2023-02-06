@@ -1,5 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, {} from 'react';
 
 export const GFIAlphaWarning = () => (
   <div className="kanban wrapper">

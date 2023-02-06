@@ -4,14 +4,15 @@ import '../../style/gfiStyle.css';
 
 import { useDispatch } from 'react-redux';
 import { checkIsNumber } from '../../utils';
-import { GFIAlarm, GFIPagination } from '../GFIComponents';
+import { GFIAlert } from '../../components/GFIAlert';
+import { GFIPagination } from '../../components/GFIPagination';
 import { RepoGraphContainer } from './repoDataDemonstrator';
 
 import { getRepoNum, getPagedRepoDetailedInfo } from '../../api/api';
 
 import {
   createAccountNavStateAction,
-  createGlobalProgressBarAction,
+  createGlobalProgressBarAction
 } from '../../storage/reducers';
 
 export function Repositories() {
@@ -159,11 +160,11 @@ export function Repositories() {
       return (
         <Row
           style={{
-            marginTop: '-15px',
+            marginTop: '-15px'
           }}
         >
           <Col>
-            <GFIAlarm
+            <GFIAlert
               title="Lost connection with server"
               onClose={() => {
                 setShowAlarm(false);
@@ -183,7 +184,7 @@ export function Repositories() {
         <Col
           sm={4}
           style={{
-            minWidth: '330px',
+            minWidth: '330px'
           }}
         >
           <Row>
@@ -200,7 +201,7 @@ export function Repositories() {
             <Col>
               <ListGroup
                 style={{
-                  marginBottom: '10px',
+                  marginBottom: '10px'
                 }}
               >
                 {renderProjectsInfos(infoList)}
@@ -292,7 +293,7 @@ function RepoInfoCard(props: RepoInfoCardProps) {
         <Col
           style={{
             fontWeight: 'bold',
-            textDecoration: isActive ? 'underline' : 'none',
+            textDecoration: isActive ? 'underline' : 'none'
           }}
           sm={9}
         >

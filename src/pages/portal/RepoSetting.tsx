@@ -3,13 +3,13 @@ import { Form, Button } from 'react-bootstrap';
 import { GFIRepoBasicProp } from '../main/GFIRepoDisplayView';
 
 import '../../style/gfiStyle.css';
-import { GFIAlarm, GFIAlarmPanelVariants } from '../GFIComponents';
+import { GFIAlert, GFIAlertPanelVariants } from '../../components';
 import {
   deleteRepoQuery,
   getRepoConfig,
   updateRepoConfig,
   updateRepoInfo,
-  updateTags,
+  updateTags
 } from '../../api/api';
 import type { RepoGFIConfig } from '../../model/api';
 import { checkIsNumber } from '../../utils';
@@ -28,11 +28,11 @@ export function RepoSetting(props: RepoSettingPops) {
   const [currentRepoConfig, setCurrentRepoConfig] = useState<RepoGFIConfig>();
   const [showConfigAlarmBanner, setShowConfigAlarmBanner] = useState(false);
   const [configAlarmBanner, setConfigAlarmBanner] = useState<{
-    variant: GFIAlarmPanelVariants;
+    variant: GFIAlertPanelVariants;
     title: string;
   }>({
     variant: 'danger',
-    title: '',
+    title: ''
   });
 
   const loadRepoConfig = () => {
@@ -74,7 +74,7 @@ export function RepoSetting(props: RepoSettingPops) {
           newcomer_threshold: newcomerThresholdSelected,
           issue_tag: gfiTag,
           gfi_threshold: parseFloat(gfiThreshold),
-          need_comment: showComment,
+          need_comment: showComment
         };
         updateRepoConfig(repoInfo.name, repoInfo.owner, repoConfig).then(
           (res) => {
@@ -82,13 +82,13 @@ export function RepoSetting(props: RepoSettingPops) {
               setShowConfigAlarmBanner(true);
               setConfigAlarmBanner({
                 variant: 'success',
-                title: 'Repo config successfully updated!',
+                title: 'Repo config successfully updated!'
               });
             } else {
               setShowConfigAlarmBanner(true);
               setConfigAlarmBanner({
                 variant: 'danger',
-                title: 'Repo config update failed',
+                title: 'Repo config update failed'
               });
             }
             loadRepoConfig();
@@ -98,7 +98,7 @@ export function RepoSetting(props: RepoSettingPops) {
         setShowConfigAlarmBanner(true);
         setConfigAlarmBanner({
           variant: 'danger',
-          title: 'Please input a GFI threshold between 0 and 1.',
+          title: 'Please input a GFI threshold between 0 and 1.'
         });
       }
     }
@@ -127,7 +127,7 @@ export function RepoSetting(props: RepoSettingPops) {
     <div className="gfi-repo-setting-container flex-col flex-wrap align-items-stretch">
       <div style={{ margin: '0 1rem' }}>
         {showUpdateBanner && (
-          <GFIAlarm
+          <GFIAlert
             variant="success"
             title={`Updating ${repoInfo.owner} / ${repoInfo.name}, we'll send you an email after successfully updated `}
             onClose={() => setShowUpdateBanner(false)}
@@ -137,7 +137,7 @@ export function RepoSetting(props: RepoSettingPops) {
 
       <div style={{ margin: '0 1rem' }}>
         {showConfigAlarmBanner && (
-          <GFIAlarm
+          <GFIAlert
             variant={configAlarmBanner.variant}
             title={configAlarmBanner.title}
             onClose={() => setShowConfigAlarmBanner(false)}
@@ -261,7 +261,7 @@ export function RepoSetting(props: RepoSettingPops) {
       </div>
       <div className="flex-row gfi-repo-setting-btns">
         {showDeleteAlarm && (
-          <GFIAlarm className="no-btn gfi-repo-setting-alarm">
+          <GFIAlert className="no-btn gfi-repo-setting-alarm">
             <div>
               &nbsp;Warning: You&apos;re going to delete your repository in
               GFI-Bot&nbsp;
@@ -289,7 +289,7 @@ export function RepoSetting(props: RepoSettingPops) {
                 Continue{' '}
               </Button>
             </div>
-          </GFIAlarm>
+          </GFIAlert>
         )}
       </div>
     </div>

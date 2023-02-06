@@ -9,10 +9,10 @@ import '../../style/gfiStyle.css';
 import {
   GFIIssueMonitor,
   GFIRepoDisplayView,
-  GFIRepoStaticsDemonstrator,
+  GFIRepoStaticsDemonstrator
 } from '../main/GFIRepoDisplayView';
-import { GFIOverlay } from '../GFIComponents';
-import { useIsMobile } from '../app/windowContext';
+import { GFIOverlay } from '../../components';
+import { useIsMobile } from '../app/context';
 
 export function SearchHistory() {
   const [searchHistory, setSearchHistory] = useState<SearchedRepo[]>();
@@ -130,12 +130,12 @@ export function SearchHistory() {
                 repoInfo={repoDisplay}
                 paging={false}
                 key={2}
-              />,
+              />
             ]}
             style={{
               marginBottom: '0.5rem',
               transition: '0.2s',
-              display: showPopover ? '' : 'none',
+              display: showPopover ? '' : 'none'
             }}
           />
         )}

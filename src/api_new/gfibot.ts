@@ -1,7 +1,36 @@
-import { requestGFI, getBaseURL, requestGFIPaginated } from './request';
+import { getBaseURL, RequestParams, asyncRequest } from './request';
 import { userInfo } from '../storage';
+import Cookies from 'js-cookie';
 
 import type * as gfi from './gfibot.d';
+import { string } from 'prop-types';
+
+/** wrapper for requesting GFI-Bot paginated apis **/
+export const requestGFIPaginated = async <T>(
+  params: RequestParams
+): Promise<gfi.GFIPaginated<T> | undefined> => {
+  const { githubToken } = userInfo();
+  if (githubToken) params.headers = { Authorization: `token ${githubToken}` };
+  const res = await asyncRequest<gfi.GFIPaginated<T>>(params);
+  if (res && 200 <= res.code && res.code < 300 && typeof res.result === 'object') {
+    return res;
+  }
+  return undefined;
+};
+
+/** wrapper for requesting GFI-Bot **/
+export const requestGFI = async <T>(
+  params: RequestParams
+): Promise<T | undefined> => {
+  // if token exists, add token to headers
+  const { githubToken } = userInfo();
+  if (githubToken) params.headers = { Authorization: `token ${githubToken}` };
+  const res = await asyncRequest<gfi.GFIResponse<T>>(params);
+  if (res && 200 <= res.code && res.code < 300 && res.result) {
+    return res.result;
+  }
+  return undefined;
+};
 
 export const getRepoLanguages = async () => (
   await requestGFI<string[]>({
@@ -92,6 +121,24 @@ export const getGithubOauthURL = async () => (
     url: '/api/github/login'
   })
 );
+
+export const redirectGithubOauth = async () => {
+  const url = await getGithubOauthURL();
+  if (url) {
+    window.location.href = url;
+  }
+};
+
+export const setGithubCookies = (params: gfi.UserGithubProfile) => {
+  // cookies expire in 7 days
+  Cookies.set('x_github_login', params.github_login, { expires: 7 });
+  Cookies.set('x_github_token', params.github_token, { expires: 7 });
+};
+
+export const removeGithubCookies = () => {
+  Cookies.remove('x_github_id');
+  Cookies.remove('x_github_token');
+};
 
 export const getUserRepoList = async () => (
   await requestGFI<gfi.UserRepo[]>({
