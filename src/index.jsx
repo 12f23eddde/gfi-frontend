@@ -2,28 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { CacheRoute, CacheSwitch } from 'react-router-cache-route';
-import { AliveScope } from 'react-activation';
+import {Helmet, HelmetProvider} from 'react-helmet-async';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {BrowserRouter, Route} from 'react-router-dom';
+import {CacheRoute, CacheSwitch} from 'react-router-cache-route';
+import {AliveScope} from 'react-activation';
 
-import { Container } from 'react-bootstrap';
-import { DescriptionPage } from './pages/descriptionPage';
-import { GFIHeader } from './pages/GFIHeader';
-import { Repositories } from './pages/repositories/repositories';
+import {Container} from 'react-bootstrap';
+import {DescriptionPage} from './pages/descriptionPage';
+import {GFIHeader} from './pages/GFIHeader';
+import {Repositories} from './pages/repositories/repositories';
 
-import { persistor, store } from './storage/configureStorage';
+import {persistor, store} from './storage/configureStorage';
 import reportWebVitals from './reportWebVitals';
-import { MainPage } from './pages/main/mainPage';
-import { LoginRedirect } from './pages/login/GFILoginComponents';
-import {
-  GlobalRefProvider,
-  WindowContextProvider
-} from './pages/app/context';
-import { GFIPortal } from './pages/portal/GFIPortal';
-import { GFICopyright } from './components/GFICopyright';
+import {MainPage} from './pages/main/MainPage';
+import {LoginRedirect} from './pages/login/GFILoginComponents';
+import {GFIPortal} from './pages/portal/GFIPortal';
+import {GFICopyright} from './components/GFICopyright';
+
+import {GlobalRefProvider} from './contexts/GlobalRefContext';
+import {WindowContextProvider} from './contexts/WindowContext';
+import {LanguageContextProvider} from './contexts/LanguageContext';
+import {UserContextProvider} from './contexts/UserContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -33,25 +34,29 @@ ReactDOM.render(
         <PersistGate loading={null} persistor={persistor}>
           <WindowContextProvider>
             <GlobalRefProvider>
-              <BrowserRouter>
-                <AliveScope>
-                  <Container
-                    fluid
-                    className="no-gutters mx-0 px-0 main-container"
-                  >
-                    <GFIHeader />
-                    <CacheSwitch>
-                      <CacheRoute exact path="/" component={MainPage} />
-                      <CacheRoute path="/home" component={DescriptionPage} />
-                      <CacheRoute path="/repos" component={Repositories} />
-                      <CacheRoute path="/portal" component={GFIPortal} />
-                      <Route path="/login/redirect" component={LoginRedirect} />
-                      <CacheRoute path="*" component={MainPage} />
-                    </CacheSwitch>
-                    <GFICopyright />
-                  </Container>
-                </AliveScope>
-              </BrowserRouter>
+              <LanguageContextProvider>
+                <UserContextProvider>
+                  <BrowserRouter>
+                    <AliveScope>
+                      <Container
+                        fluid
+                        className="no-gutters mx-0 px-0 main-container"
+                      >
+                        <GFIHeader/>
+                        <CacheSwitch>
+                          <CacheRoute exact path="/" component={MainPage}/>
+                          <CacheRoute path="/home" component={DescriptionPage}/>
+                          <CacheRoute path="/repos" component={Repositories}/>
+                          <CacheRoute path="/portal" component={GFIPortal}/>
+                          <Route path="/login/redirect" component={LoginRedirect}/>
+                          <CacheRoute path="*" component={MainPage}/>
+                        </CacheSwitch>
+                        <GFICopyright/>
+                      </Container>
+                    </AliveScope>
+                  </BrowserRouter>
+                </UserContextProvider>
+              </LanguageContextProvider>
             </GlobalRefProvider>
           </WindowContextProvider>
         </PersistGate>

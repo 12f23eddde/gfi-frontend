@@ -4,17 +4,17 @@ import React, {
   useEffect, useMemo,
   useState
 } from 'react';
-import { Container, Col, Form, Button, Dropdown } from 'react-bootstrap';
-import { SearchOutlined } from '@ant-design/icons';
+import {Container, Col, Form, Button, Dropdown} from 'react-bootstrap';
+import {SearchOutlined} from '@ant-design/icons';
 
-import './mainPage.css';
+import './MainPage.css';
 import '../../style/gfiStyle.css';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
-import { useData } from '../app/context';
-import { getRepoLanguages } from '../../api/gfibot';
-import { GFIRootReducers } from '../../storage/configureStorage';
-import { MainPageLangTagSelectedState } from '../../storage/reducers';
+import {useData} from '../app/context';
+import {getRepoLanguages} from '../../api/gfibot';
+import {GFIRootReducers} from '../../storage/configureStorage';
+import {MainPageLangTagSelectedState} from '../../storage/reducers';
 
 export type GFIRepoSearchingFilterType =
   | 'Alphabetical'
@@ -32,7 +32,7 @@ export interface GFIMainPageHeader {
 }
 
 export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
-  const { onSearch, onFilterSelect, onTagSelected } = props;
+  const {onSearch, onFilterSelect, onTagSelected} = props;
 
   const [search, setSearch] = useState<string | undefined>();
   const [filterSelected, setFilterSelected] =
@@ -80,12 +80,10 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
   const tagArray = repoLanguages ? [...repoLanguages, 'All'] : [];
   const [tagSelected, setTagSelected] = useState('All');
 
-  const globalSelectedTag = useSelector<
-    GFIRootReducers,
-    MainPageLangTagSelectedState
-  >((state) => {
-    return state.mainPageLangTagSelectedStateReducer;
-  });
+  const globalSelectedTag = useSelector<GFIRootReducers,
+    MainPageLangTagSelectedState>((state) => {
+      return state.mainPageLangTagSelectedStateReducer;
+    });
 
   useEffect(() => {
     if (
@@ -114,7 +112,7 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
         className="flex-row align-center full warp"
         id="main-header-container-wrapper"
       >
-        <Col className="flex-row" style={{ padding: '0' }}>
+        <Col className="flex-row" style={{padding: '0'}}>
           <div className="flex-col full wrap">
             <div className="flex-row">
               <Form className="main-header-input">
@@ -143,7 +141,7 @@ export const GFIMainPageHeader = forwardRef((props: GFIMainPageHeader, ref) => {
                   }
                 }}
               >
-                <SearchOutlined />
+                <SearchOutlined/>
               </Button>
             </div>
             <div

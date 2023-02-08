@@ -11,27 +11,28 @@ import React, {
   useState,
   useMemo
 } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import {Col, Row} from 'react-bootstrap';
+import {useDispatch, useSelector} from 'react-redux';
 
 import remarkGfm from 'remark-gfm';
 import remarkGemoji from 'remark-gemoji';
 import ReactMarkdown from 'react-markdown';
 
 import '../../style/gfiStyle.css';
-import { GFIOverlay } from '../../components';
-import { GFIPagination } from '../../components';
+import {GFIOverlay} from '../../components';
+import {GFIPagination} from '../../components';
 // import { GFIInfo, GFITrainingSummary, RepoBrief } from '../../model/api';
-import { getIssueByRepoInfo } from '../../api/github';
-import { GFIRootReducers } from '../../storage/configureStorage';
-import { createPopoverAction } from '../../storage/reducers';
+import {getIssueByRepoInfo} from '../../api/github';
+import {GFIRootReducers} from '../../storage/configureStorage';
+import {createPopoverAction} from '../../storage/reducers';
 // import { getGFIByRepoName, getGFINum, getRepoDetailedInfo } from '../../api/api';
 
-import { GFIBrief, GFIPaginated, RepoDynamics, RepoDetail } from '../../api/gfibot.d';
-import { getIssueCount, getIssuePaged, getRepoPaged, getRepoDynamics } from '../../api/gfibot';
-import { useIsMobile, useData } from '../app/context';
-import { RepoGraphContainer } from '../repositories/repoDataDemonstrator';
-import { checkIsNumber } from '../../utils';
+import {GFIBrief, GFIPaginated, RepoDynamics, RepoDetail} from '../../api/gfibot.d';
+import {getIssueCount, getIssuePaged, getRepoPaged, getRepoDynamics} from '../../api/gfibot';
+import {useData} from '../app/context';
+import {RepoGraphContainer} from '../repositories/repoDataDemonstrator';
+import {checkIsNumber} from '../../utils';
+import {useIsMobile} from '../../contexts/WindowContext';
 
 export interface RepoShouldDisplayPopoverState {
   shouldDisplayPopover?: boolean;
@@ -55,7 +56,7 @@ const RepoDisplayOverlayIDContext = createContext<string>({} as any);
 const RepoDisplayOverlayIDProvider: React.FC<{
   children: React.ReactNode;
   id: string;
-}> = ({ children, id }) => {
+}> = ({children, id}) => {
   return (
     <RepoDisplayOverlayIDContext.Provider value={id}>
       {children}
@@ -69,18 +70,16 @@ const useOverlayID = () => {
 
 export const GFIRepoDisplayView = forwardRef(
   (props: GFIRepoDisplayView, ref: ForwardedRef<HTMLDivElement>) => {
-    const { repoInfo, tags, panels, style, className } = props;
+    const {repoInfo, tags, panels, style, className} = props;
     const [selectedTag, setSelectedTag] = useState<number>(0);
     const [selectedTagList, setSelectedTagList] = useState<boolean[]>();
 
     // Not good, but 'position: fixed' in child components doesn't work here
     // wondering why...
-    const overlayItem = useSelector<
-      GFIRootReducers,
-      RepoShouldDisplayPopoverState | undefined
-    >((state) => {
-      return state.mainPopoverReducer;
-    });
+    const overlayItem = useSelector<GFIRootReducers,
+      RepoShouldDisplayPopoverState | undefined>((state) => {
+        return state.mainPopoverReducer;
+      });
     const overlayRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const overlayID = `main-overlay-${repoInfo.name}-${repoInfo.owner}`;
@@ -103,7 +102,7 @@ export const GFIRepoDisplayView = forwardRef(
           return (
             <div
               className="flex-col"
-              style={i === selectedTag ? {} : { display: 'none' }}
+              style={i === selectedTag ? {} : {display: 'none'}}
               key={i}
             >
               <RepoDisplayOverlayIDProvider id={overlayID}>
@@ -213,7 +212,7 @@ function PanelTag(props: {
   selected: boolean;
   onClick: (id: number) => void;
 }) {
-  const { name, id, selected, onClick } = props;
+  const {name, id, selected, onClick} = props;
   const selectedClass = selected ? 'selected' : '';
   const first = id === 0 ? 'first' : '';
   const className =
@@ -245,10 +244,8 @@ export interface GFIIssueMonitor extends GFIRepoBasicProp {
 }
 
 export const GFIIssueMonitor = forwardRef((props: GFIIssueMonitor, ref) => {
-  const { repoInfo, trainingSummary, paging } = props;
-  const [displayIssueList, setDisplayIssueList] = useState<
-    GFIInfo[] | undefined
-  >();
+  const {repoInfo, trainingSummary, paging} = props;
+  const [displayIssueList, setDisplayIssueList] = useState<GFIInfo[] | undefined>();
   const maxPageItems = paging || 6;
   const [shouldDisplayPagination, setShouldDisplayPagination] = useState(false);
   const [currentPageIdx, setCurrentPageIdx] = useState(1);
@@ -367,7 +364,7 @@ interface IssueDisplayData {
 function GFIIssueListItem(props: GFIIssueListItem) {
   const dispatch = useDispatch();
   const overlayID = useOverlayID();
-  const { repoInfo, issue, useTips, trainingSummary } = props;
+  const {repoInfo, issue, useTips, trainingSummary} = props;
   const [displayData, setDisplayData] = useState<IssueDisplayData>();
 
   const updateIssue = async () => {
@@ -492,7 +489,7 @@ interface IssueOverlayItem extends GFIRepoBasicProp {
 }
 
 function IssueOverlayItem(props: IssueOverlayItem) {
-  const { repoInfo, issueBtn, displayData, trainingSummary } = props;
+  const {repoInfo, issueBtn, displayData, trainingSummary} = props;
   const isMobile = useIsMobile();
   const flexDirection = isMobile ? 'col' : 'row';
   const probability = displayData
@@ -535,14 +532,14 @@ function IssueOverlayItem(props: IssueOverlayItem) {
         <div className={`repo-display-info-title flex-${flexDirection}`}>
           <p> {repoInfo.owner} </p>
           {!isMobile && <p> {' / '} </p>}
-          <p style={{ margin: '0' }}> {repoInfo.name} </p>
+          <p style={{margin: '0'}}> {repoInfo.name} </p>
         </div>
-        <div style={{ fontFamily: 'var(--default-font-family)' }}>
+        <div style={{fontFamily: 'var(--default-font-family)'}}>
           {repoInfo?.description}
         </div>
         <div
           className="flex-row align-center justify-content-start flex-wrap"
-          style={{ marginBottom: '0.2rem' }}
+          style={{marginBottom: '0.2rem'}}
         >
           {repoInfo.topics?.map((item, i) => (
             <div className="repo-display-info-repo-tag" key={i}>
@@ -553,7 +550,7 @@ function IssueOverlayItem(props: IssueOverlayItem) {
         {simpleTrainDataProps && (
           <div className="flex-row issue-demo-data-container-overlay">
             {simpleTrainDataProps.map((prop, i) => (
-              <SimpleTrainInfoTag title={prop.title} data={prop.data} key={i} />
+              <SimpleTrainInfoTag title={prop.title} data={prop.data} key={i}/>
             ))}
           </div>
         )}
@@ -597,7 +594,7 @@ export interface GFIRepoStaticsDemonstrator extends GFIRepoBasicProp {
 
 export const GFIRepoStaticsDemonstrator = forwardRef(
   (props: GFIRepoStaticsDemonstrator, ref) => {
-    const { repoInfo, trainingSummary, paging } = props;
+    const {repoInfo, trainingSummary, paging} = props;
     const usePaging = !(paging === false && paging !== undefined);
     const [displayInfo, setDisplayInfo] = useState<RepoDetail>();
     const simpleTrainDataProps: SimpleTrainInfoTagProp[] | [] = trainingSummary
@@ -681,7 +678,7 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
               style={
                 availableIdx === selectedIdx || !usePaging
                   ? {}
-                  : { display: 'none' }
+                  : {display: 'none'}
               }
               key={idx}
             >
@@ -701,7 +698,7 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
         {simpleTrainDataProps && (
           <div className="flex-row issue-demo-data-container">
             {simpleTrainDataProps.map((prop, i) => (
-              <SimpleTrainInfoTag title={prop.title} data={prop.data} key={i} />
+              <SimpleTrainInfoTag title={prop.title} data={prop.data} key={i}/>
             ))}
           </div>
         )}
@@ -734,12 +731,12 @@ interface SimpleTrainInfoTagProp {
 }
 
 function SimpleTrainInfoTag(props: SimpleTrainInfoTagProp) {
-  const { title, data } = props;
+  const {title, data} = props;
 
   return (
     <div
       className="simple-train-info-tag flex-row align-items-stretch"
-      style={{ marginRight: '0.4rem' }}
+      style={{marginRight: '0.4rem'}}
     >
       <div>{title}</div>
       <div>{data}</div>

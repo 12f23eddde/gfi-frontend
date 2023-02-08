@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import { ListGroup } from 'react-bootstrap';
-import { DeleteOutlined } from '@ant-design/icons';
+import {ListGroup} from 'react-bootstrap';
+import {DeleteOutlined} from '@ant-design/icons';
 
-import type { RepoDetail, UserSearchedRepo } from '../../api/gfibot.d';
+import type {RepoDetail, UserSearchedRepo} from '../../api/gfibot.d';
 // import { deleteUserSearch, getRepoInfo, getUserSearches } from '../../api/api';
 
-import { deleteUserSearchRepo, getUserSearchRepos } from '../../api/gfibot';
+import {deleteUserSearchRepo, getUserSearchRepos} from '../../api/gfibot';
 
 import '../../style/gfiStyle.css';
 import {
@@ -14,8 +14,8 @@ import {
   GFIRepoDisplayView,
   GFIRepoStaticsDemonstrator
 } from '../main/GFIRepoDisplayView';
-import { GFIOverlay } from '../../components';
-import { useIsMobile } from '../app/context';
+import {GFIOverlay} from '../../components';
+import {useIsMobile} from '../../contexts/WindowContext';
 
 export function SearchHistory() {
   const [searchHistory, setSearchHistory] = useState<SearchedRepo[]>();
@@ -88,13 +88,13 @@ export function SearchHistory() {
                 <div className="flex-row">
                   <div> {item.owner} </div>
                   <div> {' / '} </div>
-                  <div style={{ fontWeight: 'bold' }}> {item.name} </div>
+                  <div style={{fontWeight: 'bold'}}> {item.name} </div>
                 </div>
                 <div>{item.created_at}</div>
               </div>
             </ListGroup.Item>
             <DeleteOutlined
-              style={{ fontSize: '120%', marginLeft: '0.7rem' }}
+              style={{fontSize: '120%', marginLeft: '0.7rem'}}
               className="hoverable"
               onClick={() => {
                 deleteSearch(item.name, item.owner, item.increment);
@@ -128,7 +128,7 @@ export function SearchHistory() {
             repoInfo={repoDisplay}
             tags={['GFI', 'Repo Data']}
             panels={[
-              <GFIIssueMonitor repoInfo={repoDisplay} paging={14} key={1} />,
+              <GFIIssueMonitor repoInfo={repoDisplay} paging={14} key={1}/>,
               <GFIRepoStaticsDemonstrator
                 repoInfo={repoDisplay}
                 paging={false}

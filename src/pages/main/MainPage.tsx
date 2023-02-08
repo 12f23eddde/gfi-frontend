@@ -1,52 +1,32 @@
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 
-import { Col, Container, Row } from 'react-bootstrap';
-import { useIsMobile, useWindowSize } from '../app/context';
+import {Col, Container, Row} from 'react-bootstrap';
 
 import '../../style/gfiStyle.css';
-import { checkIsGitRepoURL, checkIsNumber, convertFilter, defaultFontFamily } from '../../utils';
+import {checkIsGitRepoURL, checkIsNumber, convertFilter} from '../../utils';
 
-import { GFINotiToast } from '../login/GFILoginComponents';
-import { GFIAlert } from '../../components';
-import { GFIPagination } from '../../components';
-// import {
-//   getLanguageTags,
-//   getPagedRepoBrief,
-//   getRepoInfo,
-//   getRepoNum,
-//   getTrainingSummary,
-//   searchRepoInfoByNameOrURL
-// } from '../../api/api';
+import {GFIAlert, GFIPagination} from '../../components';
 
-
-import {
-  getRepoLanguages,
-  getRepoPaged,
-  getRepoDynamics,
-  getModelPerformance,
-  searchRepoPaged
-} from '../../api/gfibot';
-
-// import { checkGithubLogin } from '../../api/githubApi';
-
-import { checkGithubLogin } from '../../api/github';
+import {checkGithubLogin} from '../../api/github';
 
 import {
   createGlobalProgressBarAction,
   createLogoutAction,
   createMainPageLangTagSelectedAction,
-  createPopoverAction,
-  MainPageLangTagSelectedState
+  createPopoverAction
 } from '../../storage/reducers';
-import { GFI_REPO_FILTER_NONE, GFIMainPageHeader } from './mainHeader';
+import {GFI_REPO_FILTER_NONE, GFIMainPageHeader} from './MainHeader';
 
-import { GFIIssueMonitor, GFIRepoDisplayView, GFIRepoStaticsDemonstrator } from './GFIRepoDisplayView';
+import {GFIIssueMonitor, GFIRepoDisplayView, GFIRepoStaticsDemonstrator} from './GFIRepoDisplayView';
 // import { GFITrainingSummary, RepoBrief, RepoSort } from '../../model/api';
-import { TrainingResult, RepoSort, RepoDynamics, RepoDetail } from '../../api/gfibot.d';
-import { GFIRootReducers } from '../../storage/configureStorage';
-import { GFITrainingSummaryDisplayView } from './GFITrainingSummaryDisplayView';
+import {RepoSort} from '../../api/gfibot.d';
+import {GFIRootReducers} from '../../storage/configureStorage';
+import {GFITrainingSummaryDisplayView} from './GFITrainingSummaryDisplayView';
+import {useIsMobile, useWindowSize} from '../../contexts/WindowContext';
+import {GFILangPanel} from './GFILangPanel';
+import {GFINotiToast} from '../../components/GFINotiToast';
 
 export function MainPage() {
   const dispatch = useDispatch();
@@ -64,7 +44,7 @@ export function MainPage() {
   const [showBannerMsg, setShowBannerMsg] = useState(true);
 
   const isMobile = useIsMobile();
-  const { width, height } = useWindowSize();
+  const {width, height} = useWindowSize();
 
   const userName = useSelector((state: GFIRootReducers) => {
     return state.loginReducer?.name;
@@ -82,13 +62,11 @@ export function MainPage() {
     topics: []
   };
 
-  const [displayRepoInfo, setDisplayRepoInfo] = useState<
-    RepoBrief[] | undefined
-  >([emptyRepoInfo]);
-  const [alarmConfig, setAlarmConfig] = useState({ show: false, msg: '' });
+  const [displayRepoInfo, setDisplayRepoInfo] = useState<RepoBrief[] | undefined>([emptyRepoInfo]);
+  const [alarmConfig, setAlarmConfig] = useState({show: false, msg: ''});
 
   const showAlarm = (msg: string) => {
-    setAlarmConfig({ show: true, msg });
+    setAlarmConfig({show: true, msg});
   };
 
   interface LocationStateLoginType {
@@ -202,7 +180,7 @@ export function MainPage() {
     filter?: RepoSort
   ) => {
     const beginIdx = (pageNum - 1) * repoCapacity;
-    dispatch(createGlobalProgressBarAction({ hidden: false }));
+    dispatch(createGlobalProgressBarAction({hidden: false}));
     getRepoNum(selectedTag).then((res) => {
       if (res && Number.isInteger(res)) {
         setTotalRepos(res);
@@ -224,7 +202,7 @@ export function MainPage() {
         });
         setDisplayRepoInfo(repoInfoList);
       }
-      dispatch(createGlobalProgressBarAction({ hidden: true }));
+      dispatch(createGlobalProgressBarAction({hidden: true}));
     });
   };
 
@@ -244,7 +222,7 @@ export function MainPage() {
       repoURL = undefined;
       repoName = s;
     }
-    dispatch(createGlobalProgressBarAction({ hidden: false }));
+    dispatch(createGlobalProgressBarAction({hidden: false}));
     searchRepoInfoByNameOrURL(repoName, repoURL).then((res) => {
       if (res) {
         setTotalRepos(1);
@@ -255,7 +233,7 @@ export function MainPage() {
           'This repository hasn\'t been added to our database yet. Please connect with its maintainers.'
         );
       }
-      dispatch(createGlobalProgressBarAction({ hidden: true }));
+      dispatch(createGlobalProgressBarAction({hidden: true}));
     });
   }, []);
 
@@ -335,7 +313,7 @@ export function MainPage() {
               }}
             >
               <div className="flex-col align-center">
-                <GFIDadaKanban
+                <GFILangPanel
                   onTagClicked={(tag) => {
                     if (tag) {
                       setSelectedTag(tag);
@@ -349,7 +327,7 @@ export function MainPage() {
                     }
                   }}
                 />
-                <GFITrainingSummaryDisplayView />
+                <GFITrainingSummaryDisplayView/>
               </div>
             </Container>
           ) : (
@@ -373,7 +351,7 @@ export function MainPage() {
             <GFIAlert
               title={alarmConfig.msg}
               onClose={() => {
-                setAlarmConfig({ show: false, msg: alarmConfig.msg });
+                setAlarmConfig({show: false, msg: alarmConfig.msg});
               }}
             />
           ) : (
@@ -454,87 +432,3 @@ export function MainPage() {
     </>
   );
 }
-
-interface GFIDadaKanban {
-  onTagClicked: (tag?: string) => void;
-}
-
-const GFIDadaKanban = forwardRef((props: GFIDadaKanban, ref) => {
-  const { onTagClicked } = props;
-  const [langTags, setLangTags] = useState<any[]>([]);
-  const globalSelectedTag = useSelector<
-    GFIRootReducers,
-    MainPageLangTagSelectedState
-  >((state) => {
-    return state.mainPageLangTagSelectedStateReducer;
-  });
-
-  useEffect(() => {
-    if (globalSelectedTag && langTags.includes(globalSelectedTag.tagSelected)) {
-      const idx = langTags.indexOf(globalSelectedTag.tagSelected);
-      if (idx !== selectedIdx) {
-        setSelectedIdx(idx);
-      }
-    } else {
-      setSelectedIdx(-1);
-    }
-  }, [globalSelectedTag]);
-
-  useEffect(() => {
-    getLanguageTags().then((res) => {
-      if (res && Array.isArray(res)) {
-        setLangTags(res);
-      }
-    });
-  }, []);
-  const [selectedIdx, setSelectedIdx] = useState<number>();
-
-  const renderLanguageTags = () => {
-    return langTags.map((val, index) => {
-      const selected =
-        selectedIdx !== undefined
-          ? selectedIdx === index
-            ? 'selected'
-            : ''
-          : '';
-      return (
-        <button
-          className={`gfi-rounded ${selected}`}
-          key={`lang-tag ${index}`}
-          onClick={() => {
-            if (index !== selectedIdx) {
-              setSelectedIdx(index);
-              onTagClicked(val);
-            } else {
-              setSelectedIdx(-1);
-              onTagClicked();
-            }
-          }}
-        >
-          {val}
-        </button>
-      );
-    });
-  };
-
-  return (
-    <div
-      className="gfi-wrapper kanban"
-      style={{
-        fontFamily: defaultFontFamily
-      }}
-    >
-      {/* <GFIAlphaWarning /> */}
-      <div className="kanban wrapper">
-        <div className="gfi-wrapper tags">
-          <div style={{ marginBottom: '0.3rem' }}>Languages</div>
-          <div className="tags wrapper" style={{ marginBottom: '0.1rem' }}>
-            {renderLanguageTags()}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-GFIDadaKanban.displayName = 'GFIDadaKanban';

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import React, {MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {
   Button,
   Col,
@@ -11,39 +11,39 @@ import {
   Popover,
   Row
 } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { withRouter } from 'react-router-dom';
+import {LinkContainer} from 'react-router-bootstrap';
+import {withRouter} from 'react-router-dom';
 // rollup compatibility issue see:https://github.com/vitejs/vite/issues/2139#issuecomment-1024852072
-import { KeepAlive } from 'react-activation';
+import {KeepAlive} from 'react-activation';
 
 import '../../style/gfiStyle.css';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   createAccountNavStateAction,
   createGlobalProgressBarAction
 } from '../../storage/reducers';
-import { GFIRootReducers } from '../../storage/configureStorage';
-import { checkIsGitRepoURL, convertFilter } from '../../utils';
+import {GFIRootReducers} from '../../storage/configureStorage';
+import {checkIsGitRepoURL, convertFilter} from '../../utils';
 
 import importTips from '../../assets/git-add-demo.png';
 // import { checkHasRepoPermissions } from '../../api/githubApi';
-import { GFIAlert, GFIAlertPanelVariants, GFIOverlay } from '../../components';
+import {GFIAlert, GFIAlertPanelVariants, GFIOverlay} from '../../components';
 // import { addRepoToGFIBot, getAddRepoHistory } from '../../api/api';
 
-import { addUserRepo, getUserRepoList } from '../../api/gfibot';
-import { checkHasRepoPermissions } from '../../api/github';
+import {addUserRepo, getUserRepoList} from '../../api/gfibot';
+import {checkHasRepoPermissions} from '../../api/github';
 
-import type { RepoDetail } from '../../api/gfibot';
+import type {RepoDetail} from '../../api/gfibot';
 
 import {
   GFIIssueMonitor,
   GFIRepoDisplayView,
   GFIRepoStaticsDemonstrator
 } from '../main/GFIRepoDisplayView';
-import { GFIRepoSearchingFilterType } from '../main/mainHeader';
-import { useIsMobile } from '../app/context';
-import { SearchHistory } from './SearchHistory';
-import { RepoSetting } from './RepoSetting';
+import {GFIRepoSearchingFilterType} from '../main/MainHeader';
+import {SearchHistory} from './SearchHistory';
+import {RepoSetting} from './RepoSetting';
+import {useIsMobile} from '../../contexts/WindowContext';
 
 export interface GFIPortal {
 }
@@ -63,7 +63,7 @@ const SubPanelTitles: SubPanelIDs[] & string[] = [
 export function GFIPortal(props: GFIPortal) {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(createAccountNavStateAction({ show: true }));
+    dispatch(createAccountNavStateAction({show: true}));
   }, []);
 
   const [currentPanelID, setCurrentPanelID] = useState<SubPanelIDs & string>(
@@ -74,12 +74,12 @@ export function GFIPortal(props: GFIPortal) {
     if (currentPanelID === 'Add Project') {
       return (
         <KeepAlive>
-          <AddProjectComponent />
+          <AddProjectComponent/>
         </KeepAlive>
       );
     }
     if (currentPanelID === 'Search History') {
-      return <SearchHistory />;
+      return <SearchHistory/>;
     }
     if (currentPanelID === 'My Account') {
       return <></>;
@@ -109,7 +109,7 @@ export const GFIPortalPageNav = withRouter((props: { id?: string }) => {
       variant="pills"
       className="flex-row justify-content-center align-center"
       id={props?.id}
-      style={{ marginTop: '10px' }}
+      style={{marginTop: '10px'}}
     >
       <Nav.Item className="account-nav-container">
         <LinkContainer to="/portal">
@@ -135,7 +135,7 @@ interface AccountSideBar {
 }
 
 function AccountSideBar(props: AccountSideBar) {
-  const { actionList, onClick } = props;
+  const {actionList, onClick} = props;
   const [selectedList, setSelectedList] = useState(
     actionList.map((_, i) => {
       return !i;
@@ -184,7 +184,7 @@ function AccountSideBar(props: AccountSideBar) {
           <div> Hello,</div>
           <div> {userName} </div>
         </div>
-        <img src={userAvatar} alt="" />
+        <img src={userAvatar} alt=""/>
       </div>
       <ListGroup>{renderItems()}</ListGroup>
     </div>
@@ -214,10 +214,10 @@ function AddProjectComponent() {
 
   const dispatch = useDispatch();
   const showProgressBar = () => {
-    dispatch(createGlobalProgressBarAction({ hidden: false }));
+    dispatch(createGlobalProgressBarAction({hidden: false}));
   };
   const hideProgressBar = () => {
-    dispatch(createGlobalProgressBarAction({ hidden: true }));
+    dispatch(createGlobalProgressBarAction({hidden: true}));
   };
 
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -471,7 +471,7 @@ function AddProjectComponent() {
           />
           <div
             className="flex-row align-center"
-            style={{ marginTop: '0.5rem' }}
+            style={{marginTop: '0.5rem'}}
           >
             {showAlarmMsg && (
               <div ref={overlayContainer}>
@@ -502,7 +502,7 @@ function AddProjectComponent() {
             <Button
               size="sm"
               variant="outline-primary"
-              style={{ marginLeft: 'auto' }}
+              style={{marginLeft: 'auto'}}
               onClick={() => {
                 addGFIRepo();
               }}
@@ -515,13 +515,13 @@ function AddProjectComponent() {
       </div>
       <div className="flex-row align-center project-add-comp-added">
         <div className="account-page-panel-title">Projects Added</div>
-        <div className="flex-row align-center" style={{ marginLeft: 'auto' }}>
-          <div style={{ fontSize: 'small', marginRight: '0.7rem' }}>
+        <div className="flex-row align-center" style={{marginLeft: 'auto'}}>
+          <div style={{fontSize: 'small', marginRight: '0.7rem'}}>
             {' '}
             Sorted By{' '}
           </div>
           <Dropdown>
-            <Dropdown.Toggle variant="light" style={{ fontSize: 'small' }}>
+            <Dropdown.Toggle variant="light" style={{fontSize: 'small'}}>
               {filterSelected}
             </Dropdown.Toggle>
             <Dropdown.Menu align="end" variant="dark">
@@ -531,7 +531,7 @@ function AddProjectComponent() {
                     onClick={(e) => {
                       onFilterSelected(item);
                     }}
-                    style={{ fontSize: 'small' }}
+                    style={{fontSize: 'small'}}
                     key={item}
                   >
                     {item as string}
@@ -543,7 +543,7 @@ function AddProjectComponent() {
         </div>
       </div>
       {addRepoAlarmConfig.show ? (
-        <div style={{ marginBottom: '-15px', marginTop: '5px' }}>
+        <div style={{marginBottom: '-15px', marginTop: '5px'}}>
           <GFIAlert
             title={addRepoAlarmConfig.msg}
             onClose={() => {
@@ -561,7 +561,7 @@ function AddProjectComponent() {
       )}
       <div
         className="flex-row flex-wrap align-center"
-        style={{ marginTop: '0.7rem' }}
+        style={{marginTop: '0.7rem'}}
       >
         {renderRepoHistory()}
       </div>
@@ -583,7 +583,7 @@ function AddProjectComponent() {
             repoInfo={addedRepoDisplayPanelConfig}
             tags={['Settings', 'GFI', 'Repo Data']}
             panels={[
-              <RepoSetting repoInfo={addedRepoDisplayPanelConfig} key={1} />,
+              <RepoSetting repoInfo={addedRepoDisplayPanelConfig} key={1}/>,
               <GFIIssueMonitor
                 repoInfo={addedRepoDisplayPanelConfig}
                 key={2}
@@ -627,7 +627,7 @@ function RepoHistoryTag(props: {
   available: boolean;
   onClick?: (repoInfo: RepoBrief) => void;
 }) {
-  const { pending, repoInfo, available, onClick } = props;
+  const {pending, repoInfo, available, onClick} = props;
   const isPending = available
     ? pending
       ? 'query-pending'

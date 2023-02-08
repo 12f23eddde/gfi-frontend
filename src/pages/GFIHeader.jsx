@@ -1,8 +1,8 @@
 // TODO:MSKYurina
 // Refactor using TypeScript
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useEffect, useRef, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 
 import {
   Container,
@@ -13,7 +13,7 @@ import {
   OverlayTrigger,
   ProgressBar
 } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
   GithubFilled,
   UserDeleteOutlined,
@@ -21,13 +21,12 @@ import {
 } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { gsap } from 'gsap';
+import {gsap} from 'gsap';
 
-import { useIsMobile } from './app/context';
-import { defaultFontFamily } from '../utils';
+import {defaultFontFamily} from '../utils';
 // import { gitHubLogin } from '../api/githubApi';
 
-import { redirectToGitHubOAuth } from '../api/github';
+import {redirectToGitHubOAuth} from '../api/github';
 
 import {
   createAccountNavStateAction,
@@ -36,8 +35,9 @@ import {
 import '../style/gfiStyle.css';
 
 import navLogo from '../assets/favicon-thumbnail.png';
-import { GFIPortalPageNav } from './portal/GFIPortal';
-import { GFIDevController } from './GFIDevController';
+import {GFIPortalPageNav} from './portal/GFIPortal';
+import {GFIDevController} from './GFIDevController';
+import {useIsMobile} from '../contexts/WindowContext';
 
 export function GFIHeader() {
   const dispatch = useDispatch();
@@ -114,7 +114,7 @@ export function GFIHeader() {
               onClick={logout}
               size="sm"
               variant="outline-danger"
-              style={{ marginLeft: 'auto' }}
+              style={{marginLeft: 'auto'}}
             >
               Logout
             </Button>
@@ -134,7 +134,7 @@ export function GFIHeader() {
           onClick={gitHubLogin}
           variant="outline-secondary"
           size="sm"
-          style={{ marginRight: '15px' }}
+          style={{marginRight: '15px'}}
           className="sign-in"
         >
           Sign in via GitHub
@@ -179,10 +179,10 @@ export function GFIHeader() {
   const iconRef = useRef(null);
 
   const hideAccountNav = () => {
-    dispatch(createAccountNavStateAction({ show: false }));
+    dispatch(createAccountNavStateAction({show: false}));
   };
   const showAccountNav = () => {
-    dispatch(createAccountNavStateAction({ show: true }));
+    dispatch(createAccountNavStateAction({show: true}));
   };
 
   const renderNavItem = () => {
@@ -218,7 +218,7 @@ export function GFIHeader() {
             }}
           >
             <GithubFilled
-              style={{ fontSize: '30px', color: normalColor }}
+              style={{fontSize: '30px', color: normalColor}}
               onClick={() =>
                 window.open('https://github.com/osslab-pku/gfi-bot')
               }
@@ -291,7 +291,7 @@ export function GFIHeader() {
 
     return (
       <Container
-        style={{ marginRight: '5px', marginLeft: '5px', maxWidth: '100vw' }}
+        style={{marginRight: '5px', marginLeft: '5px', maxWidth: '100vw'}}
       >
         <LinkContainer
           to="/"
@@ -310,7 +310,7 @@ export function GFIHeader() {
             GFI-Bot
           </Navbar.Brand>
         </LinkContainer>
-        <Navbar.Toggle />
+        <Navbar.Toggle/>
         <Navbar.Collapse>
           <Nav>
             {MyPage()}
@@ -342,8 +342,8 @@ export function GFIHeader() {
         <Navbar bg="light" sticky="top">
           {renderNavItem(false)}
         </Navbar>
-        {isDev && <GFIDevController />}
-        <GFIGlobalProgressBar />
+        {isDev && <GFIDevController/>}
+        <GFIGlobalProgressBar/>
       </div>
     );
   };
@@ -354,8 +354,8 @@ export function GFIHeader() {
         <Navbar bg="light" sticky="top" expand="false">
           {renderNavItem(true)}
         </Navbar>
-        {isDev && <GFIDevController />}
-        <GFIGlobalProgressBar />
+        {isDev && <GFIDevController/>}
+        <GFIGlobalProgressBar/>
       </>
     );
   };
@@ -379,7 +379,7 @@ export function GFIHeader() {
   return (
     <>
       {render()}
-      {shouldShowAccountNav && <GFIPortalPageNav id="portal-page-nav" />}
+      {shouldShowAccountNav && <GFIPortalPageNav id="portal-page-nav"/>}
     </>
   );
 }

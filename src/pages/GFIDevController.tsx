@@ -1,13 +1,13 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
-import { GFIAlert } from '../components';
-import { GFIOverlay } from '../components';
+import React, {useCallback, useRef, useState} from 'react';
+import {SettingOutlined, ReloadOutlined} from '@ant-design/icons';
+import {GFIAlert} from '../components';
+import {GFIOverlay} from '../components';
 import '../style/gfiStyle.css';
-import { useIsMobile } from './app/context';
-import { Button, Form } from 'react-bootstrap';
+import {Button, Form} from 'react-bootstrap';
 
-import { getBaseURL, URL_KEY } from '../api/request';
-import { checkIsValidUrl } from '../utils';
+import {getBaseURL, URL_KEY} from '../api/request';
+import {checkIsValidUrl} from '../utils';
+import {useIsMobile} from '../contexts/WindowContext';
 
 export function GFIDevController() {
   const overlayRef = useRef<HTMLDivElement>(null);
