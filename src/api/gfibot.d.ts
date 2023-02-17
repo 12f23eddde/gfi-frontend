@@ -42,13 +42,6 @@ export enum GFISort {
   _CREATED_AT = '-created_at',
 }
 
-export enum GFISort {
-  PROBABILITY = 'probability',
-  _PROBABILITY = '-probability',
-  CREATED_AT = 'created_at',
-  _CREATED_AT = '-created_at',
-}
-
 export type MonthlyCount = {
   month: string;
   count: number;

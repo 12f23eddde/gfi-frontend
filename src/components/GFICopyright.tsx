@@ -1,6 +1,6 @@
-import { Col, Container, Row } from 'react-bootstrap';
-import { defaultFontFamily } from '../utils';
+import {Col, Container, Row} from 'react-bootstrap';
 import React from 'react';
+import {defaultFontFamily} from '../common/font';
 
 export function GFICopyright() {
   const copyright =
@@ -19,7 +19,7 @@ export function GFICopyright() {
       }}
     >
       <Row>
-        <Col style={{ textAlign: 'center' }}>{copyright}</Col>
+        <Col style={{textAlign: 'center'}}>{copyright}</Col>
       </Row>
     </Container>
   );

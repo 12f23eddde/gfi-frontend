@@ -1,15 +1,15 @@
-import React, { ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import React, {ForwardedRef, forwardRef, useEffect, useState} from 'react';
 // import type { GFITrainingSummary } from '../../model/api';
 // import { getGFINum, getTrainingSummary } from '../../api/api';
 
-import type { RepoDynamics } from '../../api/gfibot.d';
-import { getIssueCount, getModelPerformance, getRepoDynamics } from '../../api/gfibot';
+import type {RepoDynamics} from '../../api/gfibot.d';
+import {getIssueCount, getModelPerformance, getRepoDynamics} from '../../api/gfibot';
 
 import '../../style/gfiStyle.css';
-import { Group } from '@visx/group';
-import { scaleLinear } from '@visx/scale';
-import { Bar, LinePath } from '@visx/shape';
-import { curveNatural } from '@visx/curve';
+import {Group} from '@visx/group';
+import {scaleLinear} from '@visx/scale';
+import {Bar, LinePath} from '@visx/shape';
+import {curveNatural} from '@visx/curve';
 import {
   GradientLightgreenGreen,
   GradientOrangeRed,
@@ -17,9 +17,6 @@ import {
   GradientPurpleTeal,
   GradientPinkBlue
 } from '@visx/gradient';
-
-export interface GFITrainingSummaryDisplayView {
-}
 
 interface TrainingSummary {
   issueNumTest: number;
@@ -83,9 +80,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
     const [fullChartWidth, setFullChartWidth] = useState(0);
     const [halfChartWidth, setHalfChartWidth] = useState(0);
     const [displayedSummary, setDisplayedSummary] = useState<TrainingSummary>();
-    const [repoActivitySummary, setRepoActivitySummary] = useState<
-      RepoActivity[]
-    >(
+    const [repoActivitySummary, setRepoActivitySummary] = useState<RepoActivity[]>(
       ActivityTags.map((item) => ({
         time: item,
         num: 0
@@ -184,7 +179,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
                   height={60}
                   gradient={
                     (
-                      <GradientOrangeRed id="g-red-info" />
+                      <GradientOrangeRed id="g-red-info"/>
                     ) as unknown as Element
                   }
                   gradientId="g-red-info"
@@ -198,7 +193,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
                   height={60}
                   gradient={
                     (
-                      <GradientLightgreenGreen id="g-green-info" />
+                      <GradientLightgreenGreen id="g-green-info"/>
                     ) as unknown as Element
                   }
                   gradientId="g-green-info"
@@ -215,7 +210,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
                   height={60}
                   gradient={
                     (
-                      <GradientPurpleTeal id="g-purple-info" />
+                      <GradientPurpleTeal id="g-purple-info"/>
                     ) as unknown as Element
                   }
                   gradientId="g-purple-info"
@@ -229,7 +224,7 @@ export const GFITrainingSummaryDisplayView = forwardRef(
                   height={60}
                   gradient={
                     (
-                      <GradientPinkBlue id="g-pink-blue-teal-info" />
+                      <GradientPinkBlue id="g-pink-blue-teal-info"/>
                     ) as unknown as Element
                   }
                   gradientId="g-pink-blue-teal-info"
@@ -243,14 +238,14 @@ export const GFITrainingSummaryDisplayView = forwardRef(
                 width={fullChartWidth}
                 height={fullChartHeight}
                 data={[
-                  { name: 'AUC', value: displayedSummary.avgAuc },
-                  { name: 'ACC', value: displayedSummary.avgAcc }
+                  {name: 'AUC', value: displayedSummary.avgAuc},
+                  {name: 'ACC', value: displayedSummary.avgAcc}
                 ]}
               />
             </div>
             <div
               className="flex-row justify-content-center"
-              style={{ marginTop: '0.5rem' }}
+              style={{marginTop: '0.5rem'}}
             >
               <ActivityDisplayer
                 width={fullChartWidth}
@@ -275,7 +270,7 @@ function NumInfoDisplayer(props: {
   num: number;
   title: string;
 }) {
-  const { width, height, gradient, gradientId, num, title } = props;
+  const {width, height, gradient, gradientId, num, title} = props;
 
   // @ts-nocheck
   return (
@@ -315,7 +310,7 @@ function AucAccBarDisplayer(props: {
   height: number;
   data: { name: 'AUC' | 'ACC'; value: number }[];
 }) {
-  const { width, height, data } = props;
+  const {width, height, data} = props;
   const barWidth = 25;
   const paddingTop = 33;
   const margin = (height - barWidth * data.length) / (data.length + 1.0);
@@ -328,7 +323,7 @@ function AucAccBarDisplayer(props: {
 
   return (
     <svg width={width} height={height + paddingTop}>
-      <GradientTealBlue id="teal" />
+      <GradientTealBlue id="teal"/>
       <rect
         width={width}
         height={height + paddingTop}
@@ -381,7 +376,7 @@ function ActivityDisplayer(props: {
   height: number;
   data: RepoActivity[];
 }) {
-  const { width, height, data } = props;
+  const {width, height, data} = props;
 
   const getMaxY = () => {
     let maxNum = 0;
@@ -406,7 +401,7 @@ function ActivityDisplayer(props: {
   return (
     <svg width={width} height={height}>
       <g className="flex-row align-center justify-content-center">
-        <GradientLightgreenGreen id="gradient-act-green" />
+        <GradientLightgreenGreen id="gradient-act-green"/>
         <rect
           width={width}
           height={height}

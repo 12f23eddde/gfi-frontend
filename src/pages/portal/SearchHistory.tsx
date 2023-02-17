@@ -14,7 +14,7 @@ import {
   GFIRepoDisplayView,
   GFIRepoStaticsDemonstrator
 } from '../main/GFIRepoDisplayView';
-import {GFIOverlay} from '../../components';
+import {GFIOverlay} from '../../components/GFIOverlay';
 import {useIsMobile} from '../../contexts/WindowContext';
 
 export function SearchHistory() {

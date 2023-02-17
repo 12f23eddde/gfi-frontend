@@ -1,15 +1,16 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {Col, Container, Row} from 'react-bootstrap';
 
 import '../../style/gfiStyle.css';
-import {checkIsGitRepoURL, checkIsNumber, convertFilter} from '../../utils';
 
-import {GFIAlert, GFIPagination} from '../../components';
+import {GFIAlert} from '../../components/GFIAlert';
+import {GFIPagination} from '../../components/GFIPagination';
 
 import {checkGithubLogin} from '../../api/github';
+import {GFIToastContext} from '../../components/GFIToast';
 
 import {
   createGlobalProgressBarAction,
@@ -26,7 +27,11 @@ import {GFIRootReducers} from '../../storage/configureStorage';
 import {GFITrainingSummaryDisplayView} from './GFITrainingSummaryDisplayView';
 import {useIsMobile, useWindowSize} from '../../contexts/WindowContext';
 import {GFILangPanel} from './GFILangPanel';
-import {GFINotiToast} from '../../components/GFINotiToast';
+import {GFIToast} from '../../components/GFIToast';
+
+import type {RepoDetail} from '../../api/gfibot.d'
+import {checkIsGitRepoURL, checkIsNumber} from '../../common/checker';
+import {convertFilter} from '../../common/reposort';
 
 export function MainPage() {
   const dispatch = useDispatch();
@@ -39,9 +44,9 @@ export function MainPage() {
     dispatch(createPopoverAction());
   }, []);
 
-  const [showLoginMsg, setShowLoginMsg] = useState(false);
-  const [showSearchMsg, setShowSearchMsg] = useState(false);
-  const [showBannerMsg, setShowBannerMsg] = useState(true);
+  // const [showLoginMsg, setShowLoginMsg] = useState(false);
+  // const [showSearchMsg, setShowSearchMsg] = useState(false);
+  // const [showBannerMsg, setShowBannerMsg] = useState(true);
 
   const isMobile = useIsMobile();
   const {width, height} = useWindowSize();
@@ -54,15 +59,7 @@ export function MainPage() {
     return state.loginReducer?.avatar;
   });
 
-  const emptyRepoInfo: RepoBrief = {
-    name: '',
-    owner: '',
-    description: '',
-    language: '',
-    topics: []
-  };
-
-  const [displayRepoInfo, setDisplayRepoInfo] = useState<RepoBrief[] | undefined>([emptyRepoInfo]);
+  const [displayRepoInfo, setDisplayRepoInfo] = useState<RepoDetail[] | undefined>([]);
   const [alarmConfig, setAlarmConfig] = useState({show: false, msg: ''});
 
   const showAlarm = (msg: string) => {
@@ -76,6 +73,24 @@ export function MainPage() {
   }
 
   const location = useLocation() as LocationStateLoginType;
+
+  useEffect(() => {
+    // show welcome if just login
+    if ('state' in location && location.state && location.state.justLogin) {
+      // setShowLoginMsg(true);
+      addToast({
+        title: userName || 'visitor',
+        iconUrl: userAvatarUrl,
+      })
+    }
+
+    // show warning message on mount
+    addToast({
+      title: userName || 'visitor',
+      iconUrl: userAvatarUrl,
+      text: 'GFI-Bot is still under alpha testing. Be cautious when using it.',
+    });
+  }, []);
 
   useEffect(() => {
     const query = window.location.search;
@@ -98,7 +113,11 @@ export function MainPage() {
       });
     }
     if ('state' in location && location.state && location.state.justLogin) {
-      setShowLoginMsg(true);
+      // setShowLoginMsg(true);
+      addToast({
+        title: userName || 'visitor',
+        iconUrl: userAvatarUrl,
+      })
     }
   }, []);
 
@@ -215,6 +234,8 @@ export function MainPage() {
     }
   };
 
+  const {addToast} = useContext(GFIToastContext);
+
   const handleSearchBtn = useCallback((s: string) => {
     let repoURL: string | undefined = s;
     let repoName;
@@ -227,7 +248,6 @@ export function MainPage() {
       if (res) {
         setTotalRepos(1);
         setDisplayRepoInfo(res);
-        setShowSearchMsg(true);
       } else {
         showAlarm(
           'This repository hasn\'t been added to our database yet. Please connect with its maintainers.'
@@ -387,34 +407,6 @@ export function MainPage() {
               />
             </Container>
           </Col>
-        </Row>
-        <Row>
-          <GFINotiToast
-            show={showBannerMsg}
-            userName={userName || 'visitor'}
-            userAvatarUrl={userAvatarUrl}
-            onClose={() => {
-              setShowBannerMsg(false);
-            }}
-            context="GFI-Bot is under active development and not ready for production yet."
-          />
-          <GFINotiToast
-            show={showLoginMsg}
-            userName={userName || 'visitor'}
-            userAvatarUrl={userAvatarUrl}
-            onClose={() => {
-              setShowLoginMsg(false);
-            }}
-          />
-          <GFINotiToast
-            show={showSearchMsg}
-            userName={userName || 'visitor'}
-            userAvatarUrl={userAvatarUrl}
-            onClose={() => {
-              setShowSearchMsg(false);
-            }}
-            context="Searching Completed!"
-          />
         </Row>
         {renderMainArea()}
       </Container>

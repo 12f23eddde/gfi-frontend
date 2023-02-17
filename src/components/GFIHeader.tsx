@@ -1,8 +1,5 @@
-// TODO:MSKYurina
-// Refactor using TypeScript
-
-import React, {useEffect, useRef, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import React, {useEffect, useRef, useState, useContext} from 'react';
+// import {useSelector, useDispatch} from 'react-redux';
 
 import {
   Container,
@@ -23,44 +20,60 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {gsap} from 'gsap';
 
-import {defaultFontFamily} from '../utils';
 // import { gitHubLogin } from '../api/githubApi';
+
+import {redirectGithubOauth} from '../api/gfibot';
+import {UserContext} from '../contexts/UserContext';
 
 import {redirectToGitHubOAuth} from '../api/github';
 
-import {
-  createAccountNavStateAction,
-  createLogoutAction
-} from '../storage/reducers';
+// import {
+//   createAccountNavStateAction,
+//   createLogoutAction
+// } from '../storage/reducers';
 import '../style/gfiStyle.css';
 
 import navLogo from '../assets/favicon-thumbnail.png';
-import {GFIPortalPageNav} from './portal/GFIPortal';
-import {GFIDevController} from './GFIDevController';
+import {GFIPortalPageNav} from '../pages/portal/GFIPortal';
+import {GFIDevController} from '../pages/GFIDevController';
 import {useIsMobile} from '../contexts/WindowContext';
+import {defaultFontFamily} from '../common/font';
 
 export function GFIHeader() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  //
+  // const logout = () => {
+  //   dispatch(createLogoutAction());
+  //   window.location.reload();
+  // };
 
-  const logout = () => {
-    dispatch(createLogoutAction());
+  // const hasLogin = useSelector((state) => {
+  //   if ('loginReducer' in state && 'hasLogin' in state.loginReducer)
+  //     return state.loginReducer.hasLogin;
+  //   return undefined;
+  // });
+
+  // const userName = useSelector((state) => {
+  //   if ('loginReducer' in state && 'name' in state.loginReducer)
+  //     return state.loginReducer.name;
+  //   return undefined;
+  // });
+
+  const {
+    userInfo,
+    logoutFromGfibot,
+  } = useContext(UserContext);
+
+  const userName = userInfo?.userName || '';
+  const hasLogin = userInfo && userName;
+
+  const onLogout = () => {
+    logoutFromGfibot();
+    // force reload
     window.location.reload();
-  };
-
-  const hasLogin = useSelector((state) => {
-    if ('loginReducer' in state && 'hasLogin' in state.loginReducer)
-      return state.loginReducer.hasLogin;
-    return undefined;
-  });
-
-  const userName = useSelector((state) => {
-    if ('loginReducer' in state && 'name' in state.loginReducer)
-      return state.loginReducer.name;
-    return undefined;
-  });
+  }
 
   // Login / Logout related components
-
   const [popOverToggled, setPopOverToggled] = useState(false);
   const [showPopOver, setShowPopOver] = useState(false);
   const popOverRef = useRef(null);
@@ -111,7 +124,7 @@ export function GFIHeader() {
               }}
             />
             <Button
-              onClick={logout}
+              onClick={onLogout}
               size="sm"
               variant="outline-danger"
               style={{marginLeft: 'auto'}}
@@ -127,11 +140,10 @@ export function GFIHeader() {
   // Sign in component
 
   const signInLink = () => {
-    const login = hasLogin === true && userName !== undefined;
-    if (!login) {
+    if (!hasLogin) {
       return (
         <Button
-          onClick={gitHubLogin}
+          onClick={redirectGithubOauth}
           variant="outline-secondary"
           size="sm"
           style={{marginRight: '15px'}}
@@ -179,10 +191,10 @@ export function GFIHeader() {
   const iconRef = useRef(null);
 
   const hideAccountNav = () => {
-    dispatch(createAccountNavStateAction({show: false}));
+    // dispatch(createAccountNavStateAction({show: false}));
   };
   const showAccountNav = () => {
-    dispatch(createAccountNavStateAction({show: true}));
+    // dispatch(createAccountNavStateAction({show: true}));
   };
 
   const renderNavItem = () => {
@@ -205,7 +217,7 @@ export function GFIHeader() {
             style={{
               display: 'inline-block',
               width: '80%',
-              textAlign: isMobile ? '' : 'right'
+              textAlign: isMobile ? undefined : 'right'
             }}
           >
             {signInLink()}
@@ -334,16 +346,16 @@ export function GFIHeader() {
   // The 'expand' property of React-bootstrap Navbar turn out to be effective (equals to 'false') even when set to 'true' or ''
   // so temporarily using two functions to render navbar responsively
 
-  const isDev = process.env.REACT_APP_ENV === 'development';
+  const isDev = import.meta.env.DEV;
 
   const renderDesktopNavbar = () => {
     return (
       <div className="flex-col sticky-top">
         <Navbar bg="light" sticky="top">
-          {renderNavItem(false)}
+          {renderNavItem()}
         </Navbar>
         {isDev && <GFIDevController/>}
-        <GFIGlobalProgressBar/>
+        {/*<GFIGlobalProgressBar/>*/}
       </div>
     );
   };
@@ -352,10 +364,10 @@ export function GFIHeader() {
     return (
       <>
         <Navbar bg="light" sticky="top" expand="false">
-          {renderNavItem(true)}
+          {renderNavItem()}
         </Navbar>
         {isDev && <GFIDevController/>}
-        <GFIGlobalProgressBar/>
+        {/*<GFIGlobalProgressBar/>*/}
       </>
     );
   };
@@ -366,44 +378,46 @@ export function GFIHeader() {
     }
     return renderMobileNavbar();
   };
+  //
+  // const shouldShowAccountNav = useSelector((state) => {
+  //   if (
+  //     'accountNavStateReducer' in state &&
+  //     'show' in state.accountNavStateReducer
+  //   )
+  //     return state.accountNavStateReducer.show;
+  //   return false;
+  // });
+  //
+  // return (
+  //   <>
+  //     {render()}
+  //     {shouldShowAccountNav && <GFIPortalPageNav id="portal-page-nav"/>}
+  //   </>
+  // );
 
-  const shouldShowAccountNav = useSelector((state) => {
-    if (
-      'accountNavStateReducer' in state &&
-      'show' in state.accountNavStateReducer
-    )
-      return state.accountNavStateReducer.show;
-    return false;
-  });
-
-  return (
-    <>
-      {render()}
-      {shouldShowAccountNav && <GFIPortalPageNav id="portal-page-nav"/>}
-    </>
-  );
+  return render();
 }
 
-function GFIGlobalProgressBar() {
-  const ref = useRef(null);
-  const hidden = useSelector((state) => {
-    if (
-      'globalProgressBarReducer' in state &&
-      'hidden' in state.globalProgressBarReducer
-    ) {
-      if (state.globalProgressBarReducer.hidden) {
-        return 'gfi-hidden-with-space';
-      }
-    }
-    return '';
-  });
-
-  return (
-    <ProgressBar
-      ref={ref}
-      className={`progress-bar-thin ${hidden} sticky-top transition-01`}
-      animated
-      now={100}
-    />
-  );
-}
+// function GFIGlobalProgressBar() {
+//   const ref = useRef(null);
+//   const hidden = useSelector((state) => {
+//     if (
+//       'globalProgressBarReducer' in state &&
+//       'hidden' in state.globalProgressBarReducer
+//     ) {
+//       if (state.globalProgressBarReducer.hidden) {
+//         return 'gfi-hidden-with-space';
+//       }
+//     }
+//     return '';
+//   });
+//
+//   return (
+//     <ProgressBar
+//       ref={ref}
+//       className={`progress-bar-thin ${hidden} sticky-top transition-01`}
+//       animated
+//       now={100}
+//     />
+//   );
+// }

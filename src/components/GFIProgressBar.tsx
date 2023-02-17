@@ -1,6 +1,6 @@
 import React from 'react';
-import { checkIsNumber } from '../utils';
-import { gsap } from 'gsap';
+import {gsap} from 'gsap';
+import {checkIsNumber} from '../common/checker';
 
 export interface GFIProgressBarProps {
   barWidth: string | number;
@@ -12,10 +12,8 @@ interface GFIProgressBarStates {
   barWidth: any;
 }
 
-export class GFIProgressBar extends React.Component<
-  GFIProgressBarProps,
-  GFIProgressBarStates
-> {
+export class GFIProgressBar extends React.Component<GFIProgressBarProps,
+  GFIProgressBarStates> {
   private readonly barRef: React.RefObject<any>;
 
   constructor(props: GFIProgressBarProps) {
@@ -38,7 +36,7 @@ export class GFIProgressBar extends React.Component<
     prevState: GFIProgressBarStates,
     snapshot: any
   ) {
-    const { barWidth, onFinished } = this.props;
+    const {barWidth, onFinished} = this.props;
     if (
       this.checkValidWidth(barWidth) &&
       this.checkValidWidth(prevProps.barWidth)
@@ -77,7 +75,7 @@ export class GFIProgressBar extends React.Component<
   }
 
   render() {
-    const { height } = this.props;
+    const {height} = this.props;
     return (
       <div
         style={{

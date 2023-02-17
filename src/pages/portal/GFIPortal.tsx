@@ -23,11 +23,11 @@ import {
   createGlobalProgressBarAction
 } from '../../storage/reducers';
 import {GFIRootReducers} from '../../storage/configureStorage';
-import {checkIsGitRepoURL, convertFilter} from '../../utils';
 
 import importTips from '../../assets/git-add-demo.png';
 // import { checkHasRepoPermissions } from '../../api/githubApi';
-import {GFIAlert, GFIAlertPanelVariants, GFIOverlay} from '../../components';
+import {GFIAlert, GFIAlertPanelVariants} from '../../components/GFIAlert';
+import {GFIOverlay} from '../../components/GFIOverlay';
 // import { addRepoToGFIBot, getAddRepoHistory } from '../../api/api';
 
 import {addUserRepo, getUserRepoList} from '../../api/gfibot';
@@ -44,6 +44,8 @@ import {GFIRepoSearchingFilterType} from '../main/MainHeader';
 import {SearchHistory} from './SearchHistory';
 import {RepoSetting} from './RepoSetting';
 import {useIsMobile} from '../../contexts/WindowContext';
+import {checkIsGitRepoURL} from '../../common/checker';
+import {convertFilter} from '../../common/reposort';
 
 export interface GFIPortal {
 }

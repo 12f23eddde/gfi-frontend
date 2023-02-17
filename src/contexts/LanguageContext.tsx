@@ -1,8 +1,9 @@
 import React, {createContext, useState} from 'react';
 import type {SetStateAction, Dispatch,} from 'react';
+import {globalWrappers} from '../common/wrapper';
 
-import {useData} from '../pages/app/context';
 import {getRepoLanguages} from '../api/gfibot';
+import {useData} from '../api/useData';
 
 export type LanguageContextType = {
   languages: string[] | null,
@@ -21,10 +22,10 @@ export const LanguageContext = createContext<LanguageContextType>({
 export const LanguageContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const _languages = useData<string[]>({
-    promise: getRepoLanguages
+  const languages = useData<string[]>({
+    promise: getRepoLanguages,
+    initial: []
   });
-  const languages = _languages ? _languages : [];
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>();
   return (
     <LanguageContext.Provider value={{languages, selectedLanguages, setSelectedLanguages}}>
@@ -32,3 +33,5 @@ export const LanguageContextProvider: React.FC<{ children: React.ReactNode }> = 
     </LanguageContext.Provider>
   )
 }
+
+globalWrappers.push(LanguageContextProvider);

@@ -4,8 +4,8 @@ import {useHistory} from 'react-router-dom';
 import {Container} from 'react-bootstrap';
 
 import '../../style/gfiStyle.css';
-import {defaultFontFamily} from '../../utils';
 import {createLoginAction} from '../../storage/reducers';
+import {defaultFontFamily} from '../../common/font';
 
 export function LoginRedirect(props: any) {
   const dispatch = useDispatch();

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import {Container, Row, Col, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/gfiStyle.css';
-import { defaultFontFamily } from '../utils';
 
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {defaultFontFamily} from '../common/font';
 
 // TODO: @MSKYurina
 //       Design and Animation
@@ -28,9 +28,9 @@ export const DescriptionPage: React.FC = () => {
           marginTop: '9%',
         }}
       >
-        <Row style={{ height: '25%', flexDirection: 'column-reverse' }}>
+        <Row style={{height: '25%', flexDirection: 'column-reverse'}}>
           <Col sm={12}>
-            <Row style={{ marginTop: 'auto' }}>
+            <Row style={{marginTop: 'auto'}}>
               <Col
                 style={{
                   textAlign: 'center',
@@ -43,17 +43,17 @@ export const DescriptionPage: React.FC = () => {
             </Row>
           </Col>
         </Row>
-        <Row style={{ marginTop: '20px' }}>
-          <Col style={{ textAlign: 'center', maxWidth: '400px' }}>
+        <Row style={{marginTop: '20px'}}>
+          <Col style={{textAlign: 'center', maxWidth: '400px'}}>
             {description}
           </Col>
         </Row>
-        <Row style={{ margin: '35px' }}>
+        <Row style={{margin: '35px'}}>
           <Col className="flex-col flex-center description-container">
-            <div style={{ maxWidth: '600px' }}>{SELF_INTRO}</div>
-            <div style={{ maxWidth: '600px' }}>{GFIBOT_INTRO}</div>
+            <div style={{maxWidth: '600px'}}>{SELF_INTRO}</div>
+            <div style={{maxWidth: '600px'}}>{GFIBOT_INTRO}</div>
             <Link to="/">
-              <Button variant="outline-primary" style={{ marginTop: '2rem' }}>
+              <Button variant="outline-primary" style={{marginTop: '2rem'}}>
                 {' '}
                 Get Started{' '}
               </Button>

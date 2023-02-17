@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Badge, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Alert, Badge, Col, Container, ListGroup, Row} from 'react-bootstrap';
 import '../../style/gfiStyle.css';
 
-import { useDispatch } from 'react-redux';
-import { checkIsNumber } from '../../utils';
-import { GFIAlert } from '../../components';
-import { GFIPagination } from '../../components';
-import { RepoGraphContainer } from './repoDataDemonstrator';
+import {useDispatch} from 'react-redux';
+import {GFIAlert} from '../../components/GFIAlert';
+import {GFIPagination} from '../../components/GFIPagination';
+import {RepoGraphContainer} from './repoDataDemonstrator';
 
 // import { getRepoNum, getPagedRepoDetailedInfo } from '../../api/api';
-import { getRepoPaged } from '../../api/gfibot';
+import {getRepoPaged} from '../../api/gfibot';
 
 import {
   createAccountNavStateAction,
   createGlobalProgressBarAction
 } from '../../storage/reducers';
+import {checkIsNumber} from '../../common/checker';
 
 export function Repositories() {
   const repoListCapacity = 5;
@@ -26,7 +26,7 @@ export function Repositories() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(createAccountNavStateAction({ show: true }));
+    dispatch(createAccountNavStateAction({show: true}));
   }, []);
 
   useEffect(() => {
@@ -43,8 +43,8 @@ export function Repositories() {
   const [infoList, setInfoList] = useState<any[]>([]);
   useEffect(() => {
     const beginIdx = (pageIdx - 1) * repoListCapacity;
-    dispatch(createGlobalProgressBarAction({ hidden: false }));
-    dispatch(createAccountNavStateAction({ show: true }));
+    dispatch(createGlobalProgressBarAction({hidden: false}));
+    dispatch(createAccountNavStateAction({show: true}));
     getPagedRepoDetailedInfo(beginIdx, repoListCapacity)
       .then((repoList) => {
         if (repoList && Array.isArray(repoList)) {
@@ -56,7 +56,7 @@ export function Repositories() {
       })
       .then(() => {
         setActiveCardIdx(0);
-        dispatch(createGlobalProgressBarAction({ hidden: true }));
+        dispatch(createGlobalProgressBarAction({hidden: true}));
       });
   }, [pageIdx]);
 
@@ -304,7 +304,7 @@ function RepoInfoCard(props: RepoInfoCardProps) {
         <Col sm={3}>
           <Badge
             pill
-            style={{ position: 'absolute', right: '5px', top: '5px' }}
+            style={{position: 'absolute', right: '5px', top: '5px'}}
           >
             {' '}
             Stars: {getStars(props.initInfo.monthly_stars)}{' '}

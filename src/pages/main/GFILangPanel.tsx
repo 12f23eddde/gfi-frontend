@@ -2,15 +2,29 @@ import React, {forwardRef, useState, useContext, useEffect} from 'react';
 
 import {LanguageContext} from '../../contexts/LanguageContext';
 
-import {defaultFontFamily} from '../../utils';
+import {defaultFontFamily} from '../../common/font';
+
+const LANGUAGE_TAG_ALL = 'All';
 
 export const GFILangPanel = forwardRef((props, ref) => {
   const {languages, selectedLanguages, setSelectedLanguages} = useContext(LanguageContext);
 
-  const langTags = languages ? languages : [];
+  const langTags = languages ? [...languages, LANGUAGE_TAG_ALL] : [LANGUAGE_TAG_ALL];
 
   const onSelectLanguage = (s: string) => {
-    setSelectedLanguages([...selectedLanguages, s])
+    if (s === LANGUAGE_TAG_ALL) {
+      setSelectedLanguages([])
+    } else {
+      setSelectedLanguages([...selectedLanguages, s])
+    }
+  }
+
+  const isSelected = (s: string) => {
+    if (s === LANGUAGE_TAG_ALL) {
+      return selectedLanguages === [];
+    } else {
+      return selectedLanguages.indexOf(s) >= 0;
+    }
   }
 
   const onUnselectLanguage = (s: string) => {
@@ -19,7 +33,7 @@ export const GFILangPanel = forwardRef((props, ref) => {
 
   const renderLanguageTags = () => {
     return langTags.map((val) => {
-      const selected = selectedLanguages.indexOf(val) >= 0;
+      const selected = isSelected(val);
       return (
         <button
           className={`gfi-rounded ${selected ? 'selected' : ''}`}

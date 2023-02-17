@@ -11,10 +11,10 @@ import './MainPage.css';
 import '../../style/gfiStyle.css';
 import {useSelector} from 'react-redux';
 
-import {useData} from '../app/context';
 import {getRepoLanguages} from '../../api/gfibot';
 import {GFIRootReducers} from '../../storage/configureStorage';
 import {MainPageLangTagSelectedState} from '../../storage/reducers';
+import {useData} from '../../api/useData';
 
 export type GFIRepoSearchingFilterType =
   | 'Alphabetical'

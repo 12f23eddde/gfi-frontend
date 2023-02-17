@@ -1,7 +1,7 @@
-import { Variant as AlertPanelVariants } from 'react-bootstrap/types';
-import React, { createRef } from 'react';
-import { gsap } from 'gsap';
-import { Alert } from 'react-bootstrap';
+import {Variant as AlertPanelVariants} from 'react-bootstrap/types';
+import React, {createRef} from 'react';
+import {gsap} from 'gsap';
+import {Alert} from 'react-bootstrap';
 
 export type GFIAlertPanelVariants = AlertPanelVariants;
 
@@ -22,8 +22,8 @@ export class GFIAlert extends React.Component<GFIAlertProps> {
   }
 
   componentDidMount() {
-    const alarmTimeline = gsap.timeline();
-    alarmTimeline
+    const alertTimeline = gsap.timeline();
+    alertTimeline
       .from(this.selfRef.current, {
         duration: 0.4,
         autoAlpha: 0,
@@ -49,7 +49,7 @@ export class GFIAlert extends React.Component<GFIAlertProps> {
   };
 
   render() {
-    const { title } = this.props;
+    const {title} = this.props;
     return (
       <Alert
         variant={this.props.variant ? this.props.variant : 'danger'}

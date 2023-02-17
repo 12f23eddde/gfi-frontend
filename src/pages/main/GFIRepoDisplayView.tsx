@@ -1,16 +1,21 @@
 import React, {
   createContext,
-  ForwardedRef,
   forwardRef,
-  MouseEventHandler,
-  ReactElement,
   useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
-  useMemo
+  useMemo,
 } from 'react';
+
+import type {
+  CSSProperties,
+  ReactElement,
+  MouseEventHandler,
+  ForwardedRef,
+} from 'react';
+
 import {Col, Row} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -19,8 +24,8 @@ import remarkGemoji from 'remark-gemoji';
 import ReactMarkdown from 'react-markdown';
 
 import '../../style/gfiStyle.css';
-import {GFIOverlay} from '../../components';
-import {GFIPagination} from '../../components';
+import {GFIOverlay} from '../../components/GFIOverlay';
+import {GFIPagination} from '../../components/GFIPagination';
 // import { GFIInfo, GFITrainingSummary, RepoBrief } from '../../model/api';
 import {getIssueByRepoInfo} from '../../api/github';
 import {GFIRootReducers} from '../../storage/configureStorage';
@@ -29,10 +34,15 @@ import {createPopoverAction} from '../../storage/reducers';
 
 import {GFIBrief, GFIPaginated, RepoDynamics, RepoDetail} from '../../api/gfibot.d';
 import {getIssueCount, getIssuePaged, getRepoPaged, getRepoDynamics} from '../../api/gfibot';
-import {useData} from '../app/context';
 import {RepoGraphContainer} from '../repositories/repoDataDemonstrator';
-import {checkIsNumber} from '../../utils';
 import {useIsMobile} from '../../contexts/WindowContext';
+import {GFISimplePagination} from '../../components/GFISimplePagination';
+
+import {LanguageContext} from '../../contexts/LanguageContext';
+
+import {repoPagedMock} from '../../api/gfibot.mock';
+import {useData} from '../../api/useData';
+import {checkIsNumber} from '../../common/checker';
 
 export interface RepoShouldDisplayPopoverState {
   shouldDisplayPopover?: boolean;
@@ -47,7 +57,7 @@ export interface GFIRepoBasicProp {
 export interface GFIRepoDisplayView extends GFIRepoBasicProp {
   tags?: string[];
   panels?: ReactElement[];
-  style?: any;
+  style?: CSSProperties;
   className?: string;
 }
 
@@ -596,7 +606,15 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
   (props: GFIRepoStaticsDemonstrator, ref) => {
     const {repoInfo, trainingSummary, paging} = props;
     const usePaging = !(paging === false && paging !== undefined);
-    const [displayInfo, setDisplayInfo] = useState<RepoDetail>();
+
+    const repoDynamics = useData<RepoDynamics>({
+      promise: getRepoDynamics,
+      params: {
+        owner: repoInfo.owner,
+        name: repoInfo.name
+      }
+    });
+
     const simpleTrainDataProps: SimpleTrainInfoTagProp[] | [] = trainingSummary
       ? [
         {
@@ -645,28 +663,21 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
     const [selectedIdx, setSelectedIdx] = useState(0);
 
     useEffect(() => {
-      getRepoDetailedInfo(repoInfo.name, repoInfo.owner).then((res) => {
-        const result = res as RepoDetail;
-        setDisplayInfo(result);
-      });
-    }, []);
-
-    useEffect(() => {
-      if (displayInfo) {
+      if (repoDynamics) {
         const info: DisplayData = {};
-        let key: keyof typeof displayInfo;
+        let key: keyof typeof repoDynamics;
         const titles = [];
-        for (key in displayInfo) {
-          const displayInfoItem = displayInfo[key] as any[];
-          if (dataCategories.includes(key) && displayInfoItem.length) {
-            info[key as DataTag] = displayInfoItem;
+        for (key in repoDynamics) {
+          const repoDynamicsItem = repoDynamics[key] as any[];
+          if (dataCategories.includes(key) && repoDynamicsItem.length) {
+            info[key as DataTag] = repoDynamicsItem;
             titles.push(dataTitle[dataCategories.indexOf(key)]);
           }
         }
         setTitle(titles);
         setDisplayData(info);
       }
-    }, [displayInfo]);
+    }, [repoDynamics]);
 
     const RenderGraphs = () => {
       let availableIdx = -1;
@@ -725,14 +736,13 @@ export const GFIRepoStaticsDemonstrator = forwardRef(
 
 GFIRepoStaticsDemonstrator.displayName = 'GFIRepoStaticsDemonstrator';
 
-interface SimpleTrainInfoTagProp {
-  title: string;
-  data: number;
+type SimpleTrainInfoTagProp = {
+  title: string,
+  data: number,
 }
 
-function SimpleTrainInfoTag(props: SimpleTrainInfoTagProp) {
-  const {title, data} = props;
-
+/** A simple tag like [AUC|0.99] */
+function SimpleTrainInfoTag({title, data}: SimpleTrainInfoTagProp) {
   return (
     <div
       className="simple-train-info-tag flex-row align-items-stretch"

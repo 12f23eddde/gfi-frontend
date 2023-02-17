@@ -11,7 +11,7 @@ import {AliveScope} from 'react-activation';
 
 import {Container} from 'react-bootstrap';
 import {DescriptionPage} from './pages/descriptionPage';
-import {GFIHeader} from './pages/GFIHeader';
+import {GFIHeader} from './components/GFIHeader';
 import {Repositories} from './pages/repositories/repositories';
 
 import {persistor, store} from './storage/configureStorage';
@@ -25,6 +25,8 @@ import {GlobalRefProvider} from './contexts/GlobalRefContext';
 import {WindowContextProvider} from './contexts/WindowContext';
 import {LanguageContextProvider} from './contexts/LanguageContext';
 import {UserContextProvider} from './contexts/UserContext';
+import {GFIToastContextProvider} from './components/GFIToast';
+import {GFITest} from './pages/GFITest';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -32,33 +34,36 @@ ReactDOM.render(
       <Helmet></Helmet>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <WindowContextProvider>
-            <GlobalRefProvider>
-              <LanguageContextProvider>
-                <UserContextProvider>
-                  <BrowserRouter>
-                    <AliveScope>
-                      <Container
-                        fluid
-                        className="no-gutters mx-0 px-0 main-container"
-                      >
-                        <GFIHeader/>
-                        <CacheSwitch>
-                          <CacheRoute exact path="/" component={MainPage}/>
-                          <CacheRoute path="/home" component={DescriptionPage}/>
-                          <CacheRoute path="/repos" component={Repositories}/>
-                          <CacheRoute path="/portal" component={GFIPortal}/>
-                          <Route path="/login/redirect" component={LoginRedirect}/>
-                          <CacheRoute path="*" component={MainPage}/>
-                        </CacheSwitch>
-                        <GFICopyright/>
-                      </Container>
-                    </AliveScope>
-                  </BrowserRouter>
-                </UserContextProvider>
-              </LanguageContextProvider>
-            </GlobalRefProvider>
-          </WindowContextProvider>
+          <GFIToastContextProvider>
+            <WindowContextProvider>
+              <GlobalRefProvider>
+                <LanguageContextProvider>
+                  <UserContextProvider>
+                    <BrowserRouter>
+                      <AliveScope>
+                        <Container
+                          fluid
+                          className="no-gutters mx-0 px-0 main-container"
+                        >
+                          <GFIHeader/>
+                          <CacheSwitch>
+                            <CacheRoute exact path="/" component={MainPage}/>
+                            <CacheRoute path="/home" component={DescriptionPage}/>
+                            <CacheRoute path="/repos" component={Repositories}/>
+                            <CacheRoute path="/portal" component={GFIPortal}/>
+                            <Route path="/login/redirect" component={LoginRedirect}/>
+                            <Route path="/test" component={GFITest}/>
+                            <CacheRoute path="*" component={MainPage}/>
+                          </CacheSwitch>
+                          <GFICopyright/>
+                        </Container>
+                      </AliveScope>
+                    </BrowserRouter>
+                  </UserContextProvider>
+                </LanguageContextProvider>
+              </GlobalRefProvider>
+            </WindowContextProvider>
+          </GFIToastContextProvider>
         </PersistGate>
       </Provider>
     </HelmetProvider>

@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { GFIRepoBasicProp } from '../main/GFIRepoDisplayView';
+import React, {useEffect, useRef, useState} from 'react';
+import {Form, Button} from 'react-bootstrap';
+import {GFIRepoBasicProp} from '../main/GFIRepoDisplayView';
 
 import '../../style/gfiStyle.css';
-import { GFIAlert, GFIAlertPanelVariants } from '../../components';
+import {GFIAlert, GFIAlertPanelVariants} from '../../components/GFIAlert';
 // import {
 //   deleteRepoQuery,
 //   getRepoConfig,
@@ -20,14 +20,14 @@ import {
   forceLabelIssues,
   forceUpdateRepo
 } from '../../api/gfibot';
-import type { UserRepoConfig } from '../../api/gfibot';
+import type {UserRepoConfig} from '../../api/gfibot';
 
-import { checkIsNumber } from '../../utils';
+import {checkIsNumber} from '../../common/checker';
 
 export type RepoSettingPops = GFIRepoBasicProp;
 
 export function RepoSetting(props: RepoSettingPops) {
-  const { repoInfo } = props;
+  const {repoInfo} = props;
 
   const gfiThresholdRef = useRef<HTMLInputElement>(null);
   const gfiTagNameRef = useRef<HTMLInputElement>(null);
@@ -135,7 +135,7 @@ export function RepoSetting(props: RepoSettingPops) {
 
   return (
     <div className="gfi-repo-setting-container flex-col flex-wrap align-items-stretch">
-      <div style={{ margin: '0 1rem' }}>
+      <div style={{margin: '0 1rem'}}>
         {showUpdateBanner && (
           <GFIAlert
             variant="success"
@@ -145,7 +145,7 @@ export function RepoSetting(props: RepoSettingPops) {
         )}
       </div>
 
-      <div style={{ margin: '0 1rem' }}>
+      <div style={{margin: '0 1rem'}}>
         {showConfigAlarmBanner && (
           <GFIAlert
             variant={configAlarmBanner.variant}
@@ -224,7 +224,7 @@ export function RepoSetting(props: RepoSettingPops) {
                 </Form.Group>
               </div>
               <Button
-                style={{ marginLeft: 'auto' }}
+                style={{marginLeft: 'auto'}}
                 size="sm"
                 variant="outline-primary"
                 onClick={() => {

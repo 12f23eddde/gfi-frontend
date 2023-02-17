@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
+import {globalWrappers} from '../common/wrapper';
 
 const WindowContext = createContext<{ width: number; height: number }>(
   {} as any
@@ -36,3 +37,5 @@ export const useIsMobile = () => {
   const {width} = useContext(WindowContext);
   return width <= mobileThreshold;
 };
+
+globalWrappers.push(WindowContextProvider);

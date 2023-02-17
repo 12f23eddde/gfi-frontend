@@ -1,6 +1,6 @@
-import React, { forwardRef, MutableRefObject, useEffect, useRef } from 'react';
-import { checkIsPercentage } from '../utils';
-import { gsap } from 'gsap';
+import React, {forwardRef, MutableRefObject, useEffect, useRef} from 'react';
+import {gsap} from 'gsap';
+import {checkIsPercentage} from '../common/checker';
 
 export interface GFIOverlay {
   width?: string;

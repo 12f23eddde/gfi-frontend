@@ -1,16 +1,16 @@
-import { getBaseURL, RequestParams, asyncRequest } from './request';
-import { userInfo } from '../storage';
+import {getBaseURL, RequestParams, asyncRequest} from './request';
+import {userInfo} from '../storage';
 import Cookies from 'js-cookie';
 
 import type * as gfi from './gfibot.d';
-import { string } from 'prop-types';
+import {string} from 'prop-types';
 
 /** wrapper for requesting GFI-Bot paginated apis **/
 export const requestGFIPaginated = async <T>(
   params: RequestParams
 ): Promise<gfi.GFIPaginated<T> | undefined> => {
-  const { githubToken } = userInfo();
-  if (githubToken) params.headers = { Authorization: `token ${githubToken}` };
+  const {githubToken} = userInfo();
+  if (githubToken) params.headers = {Authorization: `token ${githubToken}`};
   const res = await asyncRequest<gfi.GFIPaginated<T>>(params);
   if (res && 200 <= res.code && res.code < 300 && typeof res.result === 'object') {
     return res;
@@ -23,8 +23,8 @@ export const requestGFI = async <T>(
   params: RequestParams
 ): Promise<T | undefined> => {
   // if token exists, add token to headers
-  const { githubToken } = userInfo();
-  if (githubToken) params.headers = { Authorization: `token ${githubToken}` };
+  const {githubToken} = userInfo();
+  if (githubToken) params.headers = {Authorization: `token ${githubToken}`};
   const res = await asyncRequest<gfi.GFIResponse<T>>(params);
   if (res && 200 <= res.code && res.code < 300 && res.result) {
     return res.result;
@@ -47,8 +47,6 @@ export const getRepoCount = async (
     params
   })
 );
-
-export const getRepoCountMock = 1000;
 
 export const getRepoPaged = async (
   params: {
@@ -76,7 +74,7 @@ export const searchRepoPaged = async (
 );
 
 /**
- * Get repo dynamics on owner/name (leave owner&name blank for global dynamics)
+ * Get repo dynamics on owner/name (leave owner&name blank for common dynamics)
  */
 export const getRepoDynamics = async (
   params: {
@@ -129,17 +127,6 @@ export const redirectGithubOauth = async () => {
   }
 };
 
-export const setGithubCookies = (params: gfi.UserGithubProfile) => {
-  // cookies expire in 7 days
-  Cookies.set('x_github_login', params.github_login, { expires: 7 });
-  Cookies.set('x_github_token', params.github_token, { expires: 7 });
-};
-
-export const removeGithubCookies = () => {
-  Cookies.remove('x_github_id');
-  Cookies.remove('x_github_token');
-};
-
 export const getUserRepoList = async () => (
   await requestGFI<gfi.UserRepo[]>({
     url: '/api/user/repos'
@@ -147,7 +134,7 @@ export const getUserRepoList = async () => (
 );
 
 export const addUserRepo = async (
-  { owner, name }: { owner: string, name: string }
+  {owner, name}: { owner: string, name: string }
 ) => (
   await requestGFI<string>({
     url: `/api/user/repos/${owner}/${name}`,
@@ -156,7 +143,7 @@ export const addUserRepo = async (
 );
 
 export const deleteUserRepo = async (
-  { owner, name }: { owner: string, name: string }
+  {owner, name}: { owner: string, name: string }
 ) => (
   await requestGFI<string>({
     url: `/api/user/repos/${owner}/${name}`,
@@ -165,7 +152,7 @@ export const deleteUserRepo = async (
 );
 
 export const getUserRepoConfig = async (
-  { owner, name }: { owner: string, name: string }
+  {owner, name}: { owner: string, name: string }
 ) => (
   await requestGFI<gfi.UserRepoConfig>({
     url: `/api/user/repos/${owner}/${name}/config`
@@ -174,7 +161,7 @@ export const getUserRepoConfig = async (
 
 
 export const updateUserRepoConfig = async (
-  { owner, name, config }: {
+  {owner, name, config}: {
     owner: string,
     name: string,
     config: gfi.UserRepoConfig
@@ -188,7 +175,7 @@ export const updateUserRepoConfig = async (
 
 
 export const getRecommendedRepoConfig = async (
-  { owner, name, newcomer_percentage, gfi_percentage }: {
+  {owner, name, newcomer_percentage, gfi_percentage}: {
     owner: string,
     name: string,
     newcomer_percentage?: number,
@@ -204,7 +191,7 @@ export const getRecommendedRepoConfig = async (
 );
 
 export const forceUpdateRepo = async (
-  { owner, name }: { owner: string, name: string }
+  {owner, name}: { owner: string, name: string }
 ) => (
   await requestGFI<string>({
     url: `/api/user/repos/${owner}/${name}/actions/update`,
@@ -213,7 +200,7 @@ export const forceUpdateRepo = async (
 );
 
 export const forceLabelIssues = async (
-  { owner, name }: { owner: string, name: string }
+  {owner, name}: { owner: string, name: string }
 ) => (
   await requestGFI<string>({
     url: `/api/user/repos/${owner}/${name}/actions/label`,
@@ -262,7 +249,7 @@ export const getIssueDataset = async (params: {
 );
 
 /**
- * Get model performance on owner/name (leave owner&name blank for global perf)
+ * Get model performance on owner/name (leave owner&name blank for common perf)
  */
 export const getModelPerformance = async (params: {
   name?: string,
