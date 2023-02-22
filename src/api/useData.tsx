@@ -16,6 +16,7 @@ export const useData = <T, >(
     promise(params)
       .then((data) => {
         if (!ignore) {
+          console.log(data);
           setData(data);
         }
       });

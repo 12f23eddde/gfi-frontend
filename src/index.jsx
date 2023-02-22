@@ -17,7 +17,7 @@ import {Repositories} from './pages/repositories/repositories';
 import {persistor, store} from './storage/configureStorage';
 import reportWebVitals from './reportWebVitals';
 import {MainPage} from './pages/main/MainPage';
-import {LoginRedirect} from './pages/login/GFILoginComponents';
+import {LoginRedirect} from './pages/login';
 import {GFIPortal} from './pages/portal/GFIPortal';
 import {GFICopyright} from './components/GFICopyright';
 

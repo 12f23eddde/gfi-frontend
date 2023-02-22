@@ -1,10 +1,11 @@
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React, {ChangeEvent, useCallback, useMemo, useState} from 'react';
 import {Col, Container, Form, ListGroup, Pagination, Row} from 'react-bootstrap';
 
 import type {GFIPaginated} from '../api/gfibot.d'
 import {useData, UseDataHook} from '../api/useData';
 import {checkIsNumber} from '../common/checker';
 import {nanoid} from 'nanoid';
+import {prototype} from 'dotenv-expand';
 
 interface GFIPaginateProps<T> {
   useDataParams: UseDataHook<GFIPaginated<T>>
@@ -12,58 +13,84 @@ interface GFIPaginateProps<T> {
   pageInput?: boolean;
   zeroPadding?: boolean;
   className?: string;
-  children: (data: T) => React.ReactNode;
+  item: (data: T) => JSX.Element;
 }
 
+function SkeletonPaginationItem<T>(data: T) {
+  return (
+    <ListGroup.Item> {JSON.stringify(data)} </ListGroup.Item>
+  );
+}
+
+/**
+ * GFI Pagination Component (Uncontrolled)
+ * @param useDataParams - the parameters for useData
+ * @param initialPageSize - the initial page size (5)
+ * @param item - the data render function (data => <ListGroup.Item> {...} </ListGroup.Item>)
+ * @param pageInput - whether to show the page input (false)
+ * @param zeroPadding - whether to pad the page number with 0 (false)
+ * @param className - the class name of the component ('')
+ */
 export function GFIPaginate<T>({
   useDataParams,
   initialPageSize = 5,
+  item = SkeletonPaginationItem,
   pageInput = false,
   zeroPadding = false,
   className = '',
-  children,
 }: GFIPaginateProps<T>) {
   const [start, setStart] = useState(0);
   const [limit, setLimit] = useState(initialPageSize);
   const [formInput, setFormInput] = useState('');
 
-  const useDataParamsWithLimit = {
+  // react uses shallow comparison, so we need to use useMemo to avoid unnecessary re-render
+  const useDataParamsWithLimit = useMemo(() => ({
     ...useDataParams,
-    start,
-    limit,
-  }
+    params: {
+      ...(typeof useDataParams.params === 'object' ? useDataParams.params : {}),
+      start,
+      limit,
+    }
+  }), [useDataParams, start, limit]);
+
   const data = useData(useDataParamsWithLimit);
+
+  if (!data) {
+    return null;
+  }
 
   const total = data.total;
   const pageIdx = Math.floor(start / limit) + 1;
   const pageNums = Math.ceil(total / limit);
 
-  const setLimitAndResetStart = useCallback((newLimit: number) => {
+  // TODO: implement a popup: set the number of items per page
+  const setLimitAndResetStart = (newLimit: number) => {
     setStart(0);
     setLimit(newLimit);
-  }, []);
+  };
 
-  const toPage = useCallback((page: number) => {
+  const toPage = (page: number) => {
     // check page is valid
     if (page < 1 || page > pageNums) {
       return;
     }
     setStart((page - 1) * limit);
-  }, [limit, pageNums]);
+    setFormInput('');
+  };
 
-  const toFirstPage = useCallback(() => {
+  const toFirstPage = () => {
     toPage(1);
-  }, [toPage]);
+  };
 
-  const toPrevPage = useCallback(() => {
+  const toPrevPage = () => {
     if (pageIdx === 1) {
       toFirstPage();
     } else {
       toPage(pageIdx - 1);
     }
-  }, [pageIdx, toPage, toFirstPage]);
+  };
 
-  const toNextPage = useCallback(() => {
+  const toNextPage = () => {
     if (pageIdx === pageNums) {
       return;
     }
@@ -72,8 +99,7 @@ export function GFIPaginate<T>({
     } else {
       toPage(pageIdx + 1);
     }
-  },
-  [pageIdx, toPage, pageNums]);
+  }
 
   const onFormInput = (target: EventTarget) => {
     const t = target as HTMLTextAreaElement;
@@ -127,8 +153,7 @@ export function GFIPaginate<T>({
           active={ele === selectedIdx}
           onClick={() => toPage(ele)}
         >
-          {' '}
-          {ele}{' '}
+          {' '}{ele}{' '}
         </Pagination.Item>
       );
     });
@@ -155,7 +180,7 @@ export function GFIPaginate<T>({
             }}
           >
             {data.result.map((ele) => (
-              <ListGroup.Item key={nanoid(10)}>{children(ele)}</ListGroup.Item>
+              item(ele)
             ))}
           </ListGroup>
         </Col>
@@ -190,11 +215,31 @@ export function GFIPaginate<T>({
                 <Col sm={4} style={{float: 'right'}}>
                   <Form.Label
                     style={{
+                      maxWidth: '120px',
+                      float: 'right',
+                      marginLeft: '10px'
+                    }}
+                  >
+                    <Form.Select
+                      value={limit}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                        setLimitAndResetStart(parseInt(e.target.value));
+                      }}
+                    >
+                      <option value={5}>5 / Page</option>
+                      <option value={10}>10 / Page</option>
+                      <option value={20}>20 / Page</option>
+                    </Form.Select>
+                  </Form.Label>
+                  <Form.Label
+                    style={{
                       maxWidth: '80px',
                       float: 'right'
                     }}
                   >
                     <Form.Control
+                      type="text"
+                      value={formInput}
                       placeholder={`${pageIdx}/${pageNums}`}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         onFormInput && onFormInput(e.target);

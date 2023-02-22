@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import {Col, Container, Row} from 'react-bootstrap';
 import ReactECharts from 'echarts-for-react';
 
 export interface RepoGraphContainerProps {
@@ -45,37 +45,34 @@ export const RepoGraphContainer = (props: RepoGraphContainerProps) => {
       const detailedInfo = issueDataParser(info);
       const xData = dataMonthParser(detailedInfo);
       const yData = dataCountParser(detailedInfo);
-      return <RepoDataGraph xData={xData} yData={yData} />;
+      return <RepoDataGraph xData={xData} yData={yData}/>;
     }
   };
 
-  const render = () => {
-    if (props.info && props.info.length) {
-      return (
-        <Container>
-          <Row>
-            <Col
-              style={{
-                textAlign: 'left',
-                fontWeight: 'bolder',
-                fontSize: 'larger',
-                marginBottom: '10px',
-                marginLeft: '40px',
-              }}
-            >
-              {props.title}
-            </Col>
-          </Row>
-          <Row>
-            <Col>{renderData(props.info)}</Col>
-          </Row>
-        </Container>
-      );
-    }
-    return <></>;
-  };
+  if (props.info && props.info.length) {
+    return (
+      <Container>
+        <Row>
+          <Col
+            style={{
+              textAlign: 'left',
+              fontWeight: 'bolder',
+              fontSize: 'larger',
+              marginBottom: '10px',
+              marginLeft: '40px',
+            }}
+          >
+            {props.title}
+          </Col>
+        </Row>
+        <Row>
+          <Col>{renderData(props.info)}</Col>
+        </Row>
+      </Container>
+    );
+  }
 
-  return render();
+  return <> Loading... </>;
 };
 
 interface RepoDataGraphProps {
@@ -85,7 +82,7 @@ interface RepoDataGraphProps {
 
 function RepoDataGraph(props: RepoDataGraphProps) {
   const options = {
-    grid: { top: 10, right: 10, bottom: 50, left: 40 },
+    grid: {top: 10, right: 10, bottom: 50, left: 40},
     xAxis: {
       type: 'category',
       data: props.xData,
@@ -107,5 +104,5 @@ function RepoDataGraph(props: RepoDataGraphProps) {
     animation: false,
   };
 
-  return <ReactECharts option={options} />;
+  return <ReactECharts option={options}/>;
 }
